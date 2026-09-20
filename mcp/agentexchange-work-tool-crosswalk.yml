@@ -1,0 +1,807 @@
+generated: '2026-09-19'
+method: derived
+source: mcp/agentexchange-work-mcp-tools.json (live tools/list, 2026-09-19) bound to openapi/agentexchange-work-api-store-openapi.json
+  (live https://store.agentexchange.work/openapi.json, 2026-09-19) through the method+path each tool row carries
+  in the provider descriptor well-known/agentexchange-work-store-mcp.json; plus mcp/agentexchange-work-agent-planets-mcp-tools.json
+  bound to openapi/agentexchange-work-agent-planets-openapi.json by path
+surfaces:
+  openapi:
+    file: openapi/agentexchange-work-api-store-openapi.json
+    url: https://store.agentexchange.work/openapi.json
+    operations: 86
+    gated: false
+    note: OpenAPI 3.1.0, 86 operations (66 GET, 20 POST), unique operationIds, x-payment-info on 85, inline 200
+      response schemas on all 86, no components, no securitySchemes, no requestBody objects (POST bodies are described
+      in prose).
+  mcp:
+  - url: https://store.agentexchange.work/mcp
+    gated: false
+    tools: 92
+    note: Anonymous tools/list returned 92 tools with inputSchemas; paid tools are x402-gated at invocation via
+      the x_payment argument, not at listing.
+  - url: https://planets.agentexchange.work/mcp
+    gated: false
+    tools: 12
+    note: Anonymous tools/list returned 12 tools with inputSchemas.
+  graphql: null
+  a2a:
+    url: https://planets.agentexchange.work/a2a
+    card: a2a/agentexchange-work-agent-planets-agent-card.json
+    gated: false
+    protocol_version: '1.0'
+    skills: 12
+    note: Skill ids equal the planets MCP tool names one-for-one; the store and clearing-house cards have no A2A
+      endpoint (see a2a/).
+binding_rule: A store tool binds to the OpenAPI operation whose method + path equal the method + path the provider
+  descriptor (/.well-known/mcp.json) states for that tool name. Confidence is high when the tool inputSchema properties
+  equal the operation query parameters (ignoring the MCP-only x_payment argument), medium when they differ (difference
+  listed). Tools whose declared path is absent from the OpenAPI are mcp_only. Planets tools bind by path to the
+  six-operation planets OpenAPI, which has no operationIds.
+crosswalk:
+- tool: market_award
+  category: clearing house
+  rest:
+  - post_market_award
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: bid_id, task_id (x_payment is the MCP-only
+    payment argument)'
+- tool: market_publish_receipt
+  category: clearing house
+  rest:
+  - post_market_receipts
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: amount_usdc, network, payee, payer, task_id,
+    tx_hash (x_payment is the MCP-only payment argument)'
+- tool: sales_qualify_lead
+  category: ai-visibility
+  rest:
+  - salesQualify
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: brand_ai_visibility_check
+  category: ai-visibility
+  rest:
+  - brandCheck
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: ai_visibility_index
+  category: ai-visibility
+  rest:
+  - visibilityIndex
+  binding: rest
+  confidence: high
+  price: $0.01
+- tool: ai_visibility_signal
+  category: ai-visibility
+  rest:
+  - signal
+  binding: rest
+  confidence: medium
+  price: $0.005
+  note: 'tool inputSchema properties and REST query parameters differ on: limit (x_payment is the MCP-only payment
+    argument)'
+- tool: us_macro_regime
+  category: macro & rates
+  rest:
+  - macroRegime
+  binding: rest
+  confidence: high
+  price: $0.05
+- tool: defi_vs_riskfree_spread
+  category: macro & rates
+  rest:
+  - riskSpread
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: us_treasury_rates
+  category: government data
+  rest:
+  - govTreasury
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: security_type (x_payment is the MCP-only
+    payment argument)'
+- tool: defi_yields
+  category: defi
+  rest:
+  - defiYields
+  binding: rest
+  confidence: medium
+  price: $0.01
+  note: 'tool inputSchema properties and REST query parameters differ on: stablecoin_only, top (x_payment is the
+    MCP-only payment argument)'
+- tool: crypto_prices
+  category: crypto & trading
+  rest:
+  - cryptoPrices
+  binding: rest
+  confidence: high
+  price: $0.01
+- tool: prediction_market_odds
+  category: prediction markets
+  rest:
+  - predictionMarkets
+  binding: rest
+  confidence: high
+  price: $0.01
+- tool: crypto_ai_visibility
+  category: crypto & trading
+  rest:
+  - cryptoAiVisibility
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: dex_token_data
+  category: crypto & trading
+  rest:
+  - dexToken
+  binding: rest
+  confidence: high
+  price: $0.01
+- tool: whale_transfer_alerts
+  category: crypto & trading
+  rest:
+  - whaleAlerts
+  binding: rest
+  confidence: high
+  price: $0.01
+- tool: smart_money_wallet_activity
+  category: crypto & trading
+  rest:
+  - smartMoney
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: wallet_portfolio
+  category: crypto & trading
+  rest:
+  - walletHoldings
+  binding: rest
+  confidence: high
+  price: $0.01
+- tool: chain_native_balance
+  category: on-chain reads
+  rest:
+  - chainBalance
+  binding: rest
+  confidence: high
+  price: $0.003
+- tool: chain_block_header
+  category: on-chain reads
+  rest:
+  - chainBlock
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: chain_event_logs
+  category: on-chain reads
+  rest:
+  - chainLogs
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: chain_fee_history
+  category: on-chain reads
+  rest:
+  - chainFeeHistory
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: chain_token_identity
+  category: on-chain reads
+  rest:
+  - chainTokenMeta
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: chain_confirmations
+  category: on-chain reads
+  rest:
+  - chainConfirmations
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: chain_l1_data_fee
+  category: on-chain reads
+  rest:
+  - chainL1Fee
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: chain_nft_owner
+  category: on-chain reads
+  rest:
+  - chainNft
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: chain_batch_reads
+  category: on-chain reads
+  rest:
+  - chainBatch
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: chain_heartbeat
+  category: on-chain reads
+  rest:
+  - chainHeartbeat
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: chain_gas_price
+  category: on-chain reads
+  rest:
+  - chainGas
+  binding: rest
+  confidence: high
+  price: $0.02
+- tool: connect_token
+  category: enrichment connectors
+  rest:
+  - connectToken
+  binding: rest
+  confidence: high
+  price: $0.01
+- tool: pretrade_full_report
+  category: crypto & trading
+  rest:
+  - pretradePack
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: connect_company
+  category: enrichment connectors
+  rest:
+  - connectCompany
+  binding: rest
+  confidence: high
+  price: $0.03
+- tool: eu_tender_intelligence
+  category: procurement intelligence
+  rest:
+  - euTenders
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: opportunity_intelligence
+  category: procurement intelligence
+  rest:
+  - intelOpportunities
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: gov_contract_intelligence
+  category: government data
+  rest:
+  - govContracts
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: chain_id
+  category: on-chain reads
+  rest:
+  - chainId
+  binding: rest
+  confidence: high
+  price: $0.001
+- tool: chain_estimate_gas
+  category: on-chain reads
+  rest:
+  - estimateGas
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: chain_storage_slot
+  category: on-chain reads
+  rest:
+  - storageAt
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: chain_transaction_status
+  category: on-chain reads
+  rest:
+  - chainTx
+  binding: rest
+  confidence: high
+  price: $0.008
+- tool: chain_transaction_explain
+  category: on-chain reads
+  rest:
+  - chainTxExplain
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: chain_token_supply
+  category: on-chain reads
+  rest:
+  - chainSupply
+  binding: rest
+  confidence: high
+  price: $0.01
+- tool: chain_ens_resolve
+  category: on-chain reads
+  rest:
+  - chainEns
+  binding: rest
+  confidence: high
+  price: $0.005
+- tool: token_launches_feed
+  category: crypto & trading
+  rest:
+  - tokenLaunches
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: base_wave_radar
+  category: crypto & trading
+  rest:
+  - baseWaveRadar
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: crosschain_attention_radar
+  category: crypto & trading
+  rest:
+  - crosschainRadar
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: token_security_check
+  category: crypto & trading
+  rest:
+  - tokenSecurity
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: ai_category_ranking
+  category: ai-visibility
+  rest:
+  - categoryRanking
+  binding: rest
+  confidence: high
+  price: $0.02
+- tool: country_economic_indicators
+  category: macro & rates
+  rest:
+  - countryMacro
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: github_trending
+  category: developer data
+  rest:
+  - githubTrending
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: npm_downloads
+  category: developer data
+  rest:
+  - npmDownloads
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: hn_top_stories
+  category: developer data
+  rest:
+  - hnTop
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: web_search
+  category: web research
+  rest:
+  - webSearch
+  binding: rest
+  confidence: high
+  price: $0.01
+- tool: tavily_search
+  category: web research
+  rest:
+  - post_search
+  binding: rest
+  confidence: medium
+  price: $0.01
+  note: 'tool inputSchema properties and REST query parameters differ on: end_date, exclude_domains, include_answer,
+    include_domains, include_images, include_raw_content, max_results, query, search_depth, start_date, time_range,
+    topic (x_payment is the MCP-only payment argument)'
+- tool: wikipedia_lookup
+  category: web research
+  rest:
+  - webWiki
+  binding: rest
+  confidence: high
+  price: $0.01
+- tool: truck_load_profit
+  category: trucking economics
+  rest:
+  - truckProfit
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: cost_per_mile_fixed, cost_per_mile_variable,
+    fuel_price, mpg (x_payment is the MCP-only payment argument)'
+- tool: truck_cost_per_mile
+  category: trucking economics
+  rest:
+  - truckCpm
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: fuel_price, insurance_mo, maintenance_cpm,
+    monthly_fixed, mpg, other_mo, tires_cpm, truck_payment_mo (x_payment is the MCP-only payment argument)'
+- tool: web_scrape
+  category: web research
+  rest:
+  - get_web_scrape
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: url (x_payment is the MCP-only payment
+    argument)'
+- tool: web_crawl
+  category: web research
+  rest:
+  - get_web_crawl
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: keyword, limit, url (x_payment is the
+    MCP-only payment argument)'
+- tool: agent_enterprise_integration
+  category: enterprise integration
+  rest:
+  - get_agent_enterprise_integration
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: pay_to, platform, service_url (x_payment
+    is the MCP-only payment argument)'
+- tool: social_sentiment_scanner
+  category: social sentiment
+  rest:
+  - socialSentiment
+  binding: rest
+  confidence: medium
+  price: $0.05
+  note: 'tool inputSchema properties and REST query parameters differ on: q, symbol (x_payment is the MCP-only payment
+    argument)'
+- tool: b2b_lead_enrichment
+  category: enrichment connectors
+  rest:
+  - get_connect_enrich
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: domain (x_payment is the MCP-only payment
+    argument)'
+- tool: real_estate_property_valuation
+  category: real estate
+  rest:
+  - propertyValuation
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: zip, zipcode (x_payment is the MCP-only
+    payment argument)'
+- tool: crypto_market_metrics
+  category: crypto & trading
+  rest:
+  - get_crypto_market_metrics
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: ids (x_payment is the MCP-only payment
+    argument)'
+- tool: markdown_web_scraper
+  category: web research
+  rest:
+  - get_web_markdown_scraper
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: url (x_payment is the MCP-only payment
+    argument)'
+- tool: weather_forecast
+  category: weather
+  rest:
+  - get_weather_forecast
+  binding: rest
+  confidence: medium
+  price: $0.01
+  note: 'tool inputSchema properties and REST query parameters differ on: latitude, longitude (x_payment is the
+    MCP-only payment argument)'
+- tool: llm_chat_completions
+  category: llm inference
+  rest:
+  - post_v1_chat_completions
+  binding: rest
+  confidence: medium
+  price: $0.002
+  note: 'tool inputSchema properties and REST query parameters differ on: messages, model (x_payment is the MCP-only
+    payment argument)'
+- tool: llm_messages
+  category: llm inference
+  rest:
+  - post_v1_messages
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: messages, model (x_payment is the MCP-only
+    payment argument)'
+- tool: api_generate
+  category: llm inference
+  rest:
+  - post_api_generate
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: model, prompt (x_payment is the MCP-only
+    payment argument)'
+- tool: agentforce_proxy
+  category: llm proxy
+  rest:
+  - post_einstein_ai_agent_v1_agents_messages
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: message (x_payment is the MCP-only payment
+    argument)'
+- tool: vertex_proxy
+  category: llm inference
+  rest:
+  - post_v1_models_predict
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: instances (x_payment is the MCP-only payment
+    argument)'
+- tool: bedrock_proxy
+  category: llm proxy
+  rest:
+  - post_model_invoke
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: prompt (x_payment is the MCP-only payment
+    argument)'
+- tool: post_check
+  category: ai-visibility
+  rest:
+  - post_check
+  binding: rest
+  confidence: high
+  price: $0.01
+- tool: get_agents_lounge
+  category: agent networking
+  rest:
+  - get_agents_lounge
+  binding: rest
+  confidence: high
+  price: $0.09
+- tool: post_directory_list
+  category: agent directory
+  rest:
+  - post_directory_list
+  binding: rest
+  confidence: high
+  price: $1.00
+- tool: post_directory_index
+  category: agent directory
+  rest:
+  - post_directory_index
+  binding: rest
+  confidence: high
+  price: $0.25
+- tool: post_notary
+  category: notary
+  rest:
+  - post_notary
+  binding: rest
+  confidence: high
+  price: $0.10
+- tool: get_chain_erc20_balance
+  category: on-chain reads
+  rest:
+  - erc20Balance
+  binding: rest
+  confidence: medium
+  price: $0.003
+  note: 'tool inputSchema properties and REST query parameters differ on: token, wallet (x_payment is the MCP-only
+    payment argument)'
+- tool: get_chain_code
+  category: on-chain reads
+  rest:
+  - contractCode
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: address (x_payment is the MCP-only payment
+    argument)'
+- tool: get_chain_block_number
+  category: on-chain reads
+  rest:
+  - blockNumber
+  binding: rest
+  confidence: high
+  price: $0.001
+- tool: get_chain_allowance
+  category: on-chain reads
+  rest:
+  - erc20Allowance
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: owner, spender, token (x_payment is the
+    MCP-only payment argument)'
+- tool: get_chain_nonce
+  category: on-chain reads
+  rest:
+  - chainNonce
+  binding: rest
+  confidence: medium
+  price: $0.003
+  note: 'tool inputSchema properties and REST query parameters differ on: address (x_payment is the MCP-only payment
+    argument)'
+- tool: get_chain_call
+  category: on-chain reads
+  rest:
+  - ethCall
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: data, to (x_payment is the MCP-only payment
+    argument)'
+- tool: get_crypto_address_risk
+  category: crypto & trading
+  rest:
+  - addressRisk
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: address (x_payment is the MCP-only payment
+    argument)'
+- tool: get_crypto_liquidations
+  category: crypto & trading
+  rest:
+  - cryptoLiquidations
+  binding: rest
+  confidence: medium
+  price: $0.09
+  note: 'tool inputSchema properties and REST query parameters differ on: symbol (x_payment is the MCP-only payment
+    argument)'
+- tool: post_api_v1_chat_completions
+  category: llm inference
+  rest:
+  - post_api_v1_chat_completions
+  binding: rest
+  confidence: high
+  price: $0.002
+- tool: get_buy_credits
+  category: billing
+  rest:
+  - get_buy_credits
+  binding: rest
+  confidence: high
+  price: $19.00
+mcp_only:
+- tool: store_catalog
+  rest_declared: GET /
+  price: free
+  reason: the descriptor names a REST path that is not in the OpenAPI document (free discovery / Clearing House
+    routes the spec omits)
+- tool: store_samples
+  rest_declared: GET /samples
+  price: free
+  reason: the descriptor names a REST path that is not in the OpenAPI document (free discovery / Clearing House
+    routes the spec omits)
+- tool: market_overview
+  rest_declared: GET /market
+  price: free
+  reason: the descriptor names a REST path that is not in the OpenAPI document (free discovery / Clearing House
+    routes the spec omits)
+- tool: market_list_tasks
+  rest_declared: GET /market/tasks
+  price: free
+  reason: the descriptor names a REST path that is not in the OpenAPI document (free discovery / Clearing House
+    routes the spec omits)
+- tool: market_post_task
+  rest_declared: POST /market/tasks
+  price: free
+  reason: the descriptor names a REST path that is not in the OpenAPI document (free discovery / Clearing House
+    routes the spec omits)
+- tool: market_bid
+  rest_declared: POST /market/bids
+  price: free
+  reason: the descriptor names a REST path that is not in the OpenAPI document (free discovery / Clearing House
+    routes the spec omits)
+- tool: agent_passport
+  rest_declared: GET /market/passport
+  price: free
+  reason: the descriptor names a REST path that is not in the OpenAPI document (free discovery / Clearing House
+    routes the spec omits)
+rest_only:
+- category: human checkout
+  operations:
+  - answerCreditCheckoutPage (GET /ask)
+planets_crosswalk:
+- tool: claim_planet
+  rest:
+  - POST /api/claim
+  binding: rest
+  confidence: high
+- tool: list_planets
+  rest:
+  - GET /api/planets
+  binding: rest
+  confidence: high
+- tool: get_my_planet
+  rest: []
+  binding: none
+  confidence: low
+  note: per-planet read; the OpenAPI publishes only the whole-galaxy GET /api/planets
+- tool: terraform
+  rest: []
+  binding: none
+  confidence: low
+  note: no matching operation in the six-path OpenAPI
+- tool: build
+  rest: []
+  binding: none
+  confidence: low
+  note: no matching operation in the six-path OpenAPI
+- tool: visit_planet
+  rest: []
+  binding: none
+  confidence: low
+  note: no matching operation in the six-path OpenAPI
+- tool: leave_message
+  rest: []
+  binding: none
+  confidence: low
+  note: no matching operation in the six-path OpenAPI
+- tool: post_offer
+  rest: []
+  binding: none
+  confidence: low
+  note: Market Square offer; no matching operation in the OpenAPI
+- tool: list_offers
+  rest: []
+  binding: none
+  confidence: low
+  note: no matching operation in the OpenAPI
+- tool: accept_offer
+  rest:
+  - POST /api/accept (x402 catalog only)
+  binding: x402-catalog
+  confidence: medium
+  note: The $0.05 POST /api/accept is declared in /.well-known/x402 but not in the OpenAPI.
+- tool: list_portals
+  rest: []
+  binding: none
+  confidence: low
+- tool: travel_portal
+  rest: []
+  binding: none
+  confidence: low
+coverage:
+  tools_named: 92
+  tools_bound: 85
+  tools_high_confidence: 55
+  mcp_only: 7
+  rest_operations_total: 86
+  rest_operations_with_tool: 85
+  rest_only: 1
+  planets_tools: 12
+  planets_tools_bound: 2
+  planets_rest_operations: 6

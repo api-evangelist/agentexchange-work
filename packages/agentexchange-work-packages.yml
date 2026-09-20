@@ -1,0 +1,36 @@
+generated: '2026-09-19'
+method: searched
+source: >-
+  registry.npmjs.org search (agentexchange, x402-agent-store), pypi.org/pypi/agentexchange/json,
+  api.github.com/users/rileycraig14/repos, api.github.com/orgs/agentexchange/repos, the provider's llms.txt,
+  MCP descriptor, api-docs and skill.md — 2026-09-19.
+package_count: 0
+official_count: 0
+summary: >-
+  Agent Exchange publishes no client library, SDK or CLI in any registry. npm search for "agentexchange"
+  returns one unrelated package (squirex); "x402-agent-store" returns only the x402 protocol packages
+  (x402, @x402/evm, @x402/svm, @x402/extensions, @coinbase/cdp-sdk), which are the x402 Foundation's and
+  Coinbase's, not this provider's. PyPI has no "agentexchange" project (404). The GitHub user rileycraig14
+  (named in the store agent card's provider.organization and the ai-plugin contact) has zero public
+  repositories, and the GitHub organization "AgentExchange" is a different company (Web3 sub-account tooling,
+  last pushed 2024) — not this provider, and not recorded. The provider's own integration story is deliberately
+  package-free: keyless HTTPS plus x402, a hosted MCP endpoint, and the generic `npx mcp-remote` bridge for
+  stdio clients. No SDKs pointer is emitted.
+packages: []
+third_party_tooling_the_provider_documents:
+- name: mcp-remote
+  registry: npm
+  role: 'stdio → Streamable HTTP bridge the provider descriptor names ("stdio_bridge": "npx mcp-remote https://store.agentexchange.work/mcp")'
+  official: false
+  note: Generic community proxy, not authored by Agent Exchange; version not recorded because it is not this provider's package.
+- name: x402 / @x402/evm / @x402/svm
+  registry: npm
+  role: the payment protocol client an agent uses to sign the USDC authorization the store's 402 demands
+  official: false
+  note: x402 Foundation packages; version not recorded because they are not this provider's.
+searched:
+- {registry: npm, query: agentexchange, result: 'no first-party package (1 unrelated hit)'}
+- {registry: npm, query: x402-agent-store, result: 'x402 protocol packages only'}
+- {registry: pypi, query: agentexchange, status: 404}
+- {registry: github, query: 'users/rileycraig14/repos', result: '0 public repositories'}
+- {registry: github, query: 'orgs/agentexchange/repos', result: 'different company (AgentExchange/audits, privy-tma-demo-2, 2024)'}

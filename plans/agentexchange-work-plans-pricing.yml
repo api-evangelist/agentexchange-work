@@ -1,0 +1,131 @@
+generated: '2026-09-19'
+method: probed
+source: https://store.agentexchange.work/.well-known/x402 (85 priced resources), https://store.agentexchange.work/billing/catalog.json
+  (card rails and plans), https://store.agentexchange.work/.well-known/usd.json, https://store.agentexchange.work/api-docs,
+  plus the human product prices stated in https://store.agentexchange.work/llms.txt and https://try.agentexchange.work/llms.txt
+docs:
+- https://store.agentexchange.work/billing
+- https://store.agentexchange.work/llms.txt
+- https://try.agentexchange.work/terms
+plan_count: 3
+currency: USD (card plans); USDC on Base or Solana for x402 per-call
+model: 'Two rails. (1) Pay-per-call in USDC via x402 — no account, no key, no minimum, each of the 85 paid routes
+  carries its own fixed price, quoted again in the 402 before payment. (2) A card-bought API key (Stripe): a $29/month
+  all-access subscription, a $19 one-time 1,000-call prepaid pack (also purchasable in USDC via GET /buy/credits),
+  and a not-yet-purchasable $0.01/call metered plan. Card-key calls are priced per SKU at 5x the x402 price ($0.45
+  for a $0.09 route) per billing/catalog.json.'
+plans:
+- id: pro
+  name: All-Access API Key — Pro
+  price: 29
+  currency: USD
+  billing_period: month
+  mode: subscription
+  included_quota: every SKU over plain HTTPS; "Fair-use rate limited" (no number published)
+  overage: not stated
+  purchasable: true
+  checkout: https://store.agentexchange.work/billing/checkout?plan=pro
+  stripe_price_id_published: true
+  note: 'Authorization: Bearer ak_… or X-API-Key. Cancel any time.'
+- id: credits
+  name: Prepaid Credit Pack — 1,000 calls
+  price: 19
+  currency: USD
+  billing_period: one-time
+  mode: payment
+  included_quota: 1,000 calls across any SKU
+  overage: buy another pack
+  purchasable: true
+  checkout: https://store.agentexchange.work/billing/checkout?plan=credits
+  usdc_checkout: https://store.agentexchange.work/buy/credits (19.00 USDC)
+- id: metered
+  name: Pay-as-you-go (metered) API Key
+  price: 0.01
+  currency: USD
+  billing_period: per call, invoiced monthly
+  mode: subscription (Stripe meter)
+  purchasable: false
+  note: 'Listed with purchasable: false — "Optional — requires a Stripe meter."'
+x402_per_call:
+  endpoints_priced: 85
+  min_usd: 0.001
+  max_usd: 19.0
+  median_usd: 0.09
+  mode_usd: 0.09
+  bands:
+    ≤ $0.003: 7
+    $0.003–$0.01: 17
+    $0.01–$0.05: 5
+    $0.05–$0.125: 53
+    '> $0.125': 3
+  networks:
+  - base (eip155:8453) USDC
+  - solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp USDC
+  payTo_base: '0xc91cE6291eDC0713ec753BAFBA002506ffb2b95c'
+  most_expensive:
+  - path: /buy/credits
+    usd: 19.0
+    method: GET
+  - path: /directory/list
+    usd: 1.0
+    method: POST
+  - path: /directory/index
+    usd: 0.25
+    method: POST
+  - path: /notary
+    usd: 0.1
+    method: POST
+  - path: /agent/enterprise-integration
+    usd: 0.09
+    method: GET
+  - path: /agents/lounge
+    usd: 0.09
+    method: GET
+  cheapest:
+  - path: /chain/block-number
+    usd: 0.001
+    method: GET
+  - path: /chain/chain-id
+    usd: 0.001
+    method: GET
+  - path: /api/v1/chat/completions
+    usd: 0.002
+    method: POST
+  - path: /v1/chat/completions
+    usd: 0.002
+    method: POST
+  - path: /chain/balance
+    usd: 0.003
+    method: GET
+  - path: /chain/erc20-balance
+    usd: 0.003
+    method: GET
+  note: Prices read from the provider's canonical x402 catalog on 2026-09-19; the OpenAPI x-payment-info blocks
+    quote the same amounts. The $19 /buy/credits row is the credit pack, not a data call.
+sibling_surfaces:
+  gatekeeper_oracle: $0.05 USDC per question (x402 v1/v2), /oracle/info free
+  agent_planets: /survey $0.001, /odds $0.01, /api/accept $0.05 (x402); claim, pulse, planets, handshakes free
+  clearing_house: register, discover, bid free; POST /tasks 0.05 USDC toll (exchange host); award $0.09 and receipt
+    $0.09 on the store /market/* routes
+human_products:
+- name: One AI Answer Credit
+  price: $1.00 one-time
+  url: https://store.agentexchange.work/ask
+- name: Instant Mini Report
+  price: $9 one-time
+  url: https://store.agentexchange.work/report
+- name: Human-reviewed deep audit
+  price: $49 one-time
+  url: https://store.agentexchange.work/report
+- name: Monitoring
+  price: $99/month, cancel any time
+  url: https://try.agentexchange.work
+- name: Agency white-label pack (5 reports)
+  price: $199 one-time
+  url: https://try.agentexchange.work/llms.txt
+- name: BuyReady Agent-Readiness Pack
+  price: $99 one-time (Stripe, human-paid)
+  url: https://buyready.rileycraig14.workers.dev/buy
+  note: Sold from a workers.dev host the provider controls; recorded, not treated as an agentexchange.work API surface.
+free_tier: GET /score (no key), GET /samples, /studio, /badge, /market, /v1/models, /status, /health; planets claim;
+  clearing-house register/discover/bid; 30-day refund on the human reports (terms).

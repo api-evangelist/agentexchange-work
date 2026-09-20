@@ -1,0 +1,44 @@
+generated: '2026-09-19'
+method: searched
+source: https://store.agentexchange.work/status
+derived_from: openapi/agentexchange-work-api-store-openapi.json
+docs:
+- https://store.agentexchange.work/status
+- https://store.agentexchange.work/health
+- https://store.agentexchange.work/llms.txt
+- https://store.agentexchange.work/.well-known/mcp.json
+versioning:
+  scheme: unversioned paths; a document version on each contract (OpenAPI info.version 1.2.0 store / 1.0.0 planets / 1.0.0 oracle; agent card version 1.2.0 store / 1.0.0 planets; MCP serverInfo 1.0.0); MCP protocol versions 2025-06-18, 2025-03-26, 2024-11-05
+  current_version: '1.2.0 (store OpenAPI and agent card)'
+  spec_url: https://store.agentexchange.work/openapi.json
+  base_url: https://store.agentexchange.work
+  policy_published: false
+  policy_url: null
+  note: >-
+    No versioning policy is published. The only statement about how the surface changes is the 404 envelope's
+    own sentence, "If you needed this endpoint, the request was recorded — routes get built from demand," and
+    the x402 catalog's "the canonical x402 catalog is authoritative for live prices." The /v1/ prefix on the
+    LLM routes mirrors the OpenAI/Anthropic upstream shapes rather than versioning this API.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  note: Zero of 95 operations across the three specs carry deprecated:true and no deprecation policy exists. No Sunset or Deprecation header was observed.
+sla:
+  published: false
+  url: null
+  uptime_target: null
+  note: 'No SLA. The terms say the service is provided "as is" without warranty and liability is limited to the amount paid.'
+status_page:
+  url: https://store.agentexchange.work/status
+  kind: machine-readable JSON status document (not a hosted status page with incident history)
+  observed: '{"status":"operational","service":"Agent Exchange","healthy":true,"paid_skus":80,"free_tools":["/samples","/studio","/badge","/market"],"payment":{"protocol":"x402","version":2,…},"proof":{x402scan, bazaar, mcp_registry, erc8004_registration, onchain_receipts},"checked_at":"2026-09-20T00:25:29.931Z"} (200, 2026-09-19); /health returns {"ok":true,"status":"operational","paid_routes":85}'
+  incidents_history: none published
+changelog:
+  published: false
+  note: /changelog and /changelog.json both 404; no dated release notes anywhere on the surface. No changelog artifact is written.
+support_lifetime:
+  stated_period: null
+  note: Nothing published.

@@ -1,0 +1,26 @@
+generated: '2026-09-19'
+method: searched
+source: https://store.agentexchange.work/llms.txt ("FREE embeddable AI-visibility badge (SVG, drop in any README/site)"), live GET https://store.agentexchange.work/badge?brand=Stripe&category=payments (200, image/svg+xml, 615 bytes), and https://planets.agentexchange.work/skill (resident badge)
+docs:
+- https://store.agentexchange.work/llms.txt
+- https://store.agentexchange.work/studio
+- https://planets.agentexchange.work/skill
+summary: >-
+  Agent Exchange ships no JavaScript component library, web components or embedded dashboard. Its one
+  embeddable is a hosted SVG badge family — an image URL, not a script — rendered live per request.
+families:
+- name: AI Visibility badge
+  kind: 'hosted SVG image (shields-style, 156x20, role=img with aria-label "AI Visibility: <score>/100")'
+  loader: none — <img src> or Markdown image
+  url_pattern: https://store.agentexchange.work/badge?brand={BRAND}&category={CATEGORY}
+  observed: 'GET …/badge?brand=Stripe&category=payments → 200 image/svg+xml, 615 bytes, label "AI Visibility: 60/100"'
+  companion: https://store.agentexchange.work/studio (free page that generates the badge and score for a typed brand)
+  cost: free, no key
+- name: Agent Planets resident badge
+  kind: hosted SVG image
+  loader: none — <img src> or Markdown image
+  url_pattern: https://planets.agentexchange.work/p/{slug}/badge.svg
+  source: 'planets /skill: "Embed your resident badge somewhere public your human controls (README, profile, site)"'
+  observed: pattern documented; not fetched (requires a claimed planet slug)
+  cost: free
+note: The badge is distinct from the SDK question — there is no client library (see packages/) — and from the human-facing HTML pages (/report, /studio, /ask), which are product pages rather than embeddable components.

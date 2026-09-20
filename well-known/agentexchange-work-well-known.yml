@@ -1,0 +1,398 @@
+generated: '2026-09-19'
+method: probed
+source: >-
+  Live GET probes, 2026-09-19, of the named /.well-known/* path list on every host this record knows — the
+  registrable domain agentexchange.work (www.agentexchange.work does not resolve), the API Store host
+  store.agentexchange.work (also the primary MCP host), exchange.agentexchange.work, planets.agentexchange.work
+  (the second MCP host and the A2A JSON-RPC host), gatekeeper.agentexchange.work (the oracle's second
+  OpenAPI servers[] host) and try.agentexchange.work (the terms/privacy host) — plus the extra discovery
+  documents the provider's own status page, api-catalog linkset, ai-plugin and agent cards name (x402
+  catalog, mcp.json, usd.json, registration.json, jwks.json). Every row below is a request that was actually
+  issued; every status is the one returned; a body was saved only where the response was a real,
+  correctly-typed document. A negative-control path that cannot exist was issued on every host.
+summary:
+  hosts_probed: 6
+  documents_served: 16
+  hit_count: 16
+  path_echo_control: passed
+  note: >-
+    The store host serves the complete discovery layer: an RFC 9116 security.txt (Contact, Expires 2027-07-01,
+    Canonical, Preferred-Languages, Policy), an RFC 9727 api-catalog linkset (served as application/json rather
+    than application/linkset+json; describedby → x402 catalog, usd.json and billing/catalog.json, service-desc →
+    openapi.json typed application/vnd.oai.openapi+json), an OpenAI-style ai-plugin.json pointing at the
+    OpenAPI, an A2A agent card at both card paths, the provider's own MCP descriptor at /.well-known/mcp.json
+    (endpoint, transports, protocol versions, install snippets, 92 tools with prices), an x402 v1 catalog of 85
+    resources, a USD offers document and an ERC-8004 registration. It serves NO OpenID/OAuth discovery and no
+    RFC 9728 protected-resource metadata for its MCP server — /.well-known/oauth-protected-resource answers 404
+    with a JSON body that says so explicitly ("This MCP server does not use OAuth … Connect to
+    https://store.agentexchange.work/mcp with no credentials"), which is recorded as the honest absence it is.
+    The apex serves an ai-plugin.json, the Clearing House's legacy agent.json and the Gatekeeper x402 catalog.
+    planets serves a security.txt (Contact + Canonical + Preferred-Languages, NO Expires — not RFC 9116
+    conformant), an A2A card at both card paths and again at /.well-known/mcp.json, an x402 catalog and a JWKS.
+    gatekeeper answers HTTP 401 for every /.well-known/ path except /.well-known/x402 (and for the negative
+    control), so its rows are recorded as 401 and nothing is credited there beyond the x402 catalog. Misses are
+    real: apex/exchange return a 9-byte "Not found" 404, store a JSON not_found envelope, planets a 44-byte JSON
+    404, try a 342-byte HTML 404 — and the negative control returned non-2xx on all six hosts.
+hosts:
+- host: https://agentexchange.work
+  role: Website (apex); OpenAPI servers[0] for the Gatekeeper Oracle; same deployment as exchange.agentexchange.work
+  path_echo_control: passed
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    content_type: application/json
+    bytes: 581
+    file: agentexchange-work-root-ai-plugin.json
+    standard: OpenAI ai-plugin manifest (schema_version v1)
+    note: Describes "The Agent Exchange" clearing house (api.type none, auth none, legal_info_url https://exchange.agentexchange.work/legal which 404s). Byte-identical to the copy on exchange.agentexchange.work.
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: application/json
+    bytes: 1442
+    file: ../a2a/agentexchange-work-clearing-house-agent-card.json
+    standard: A2A Agent Card (protocolVersion 0.3.0) at the legacy path
+    note: Byte-identical to https://exchange.agentexchange.work/.well-known/agent.json; graded near-conformant in a2a/agentexchange-work-a2a.yml.
+  - path: /.well-known/x402
+    status: 200
+    content_type: application/json; charset=utf-8
+    bytes: 2073
+    file: agentexchange-work-root-x402.json
+    standard: x402 discovery catalog (x402Version 1)
+    note: The Gatekeeper Oracle catalog — two paid resources (/oracle on the apex and on gatekeeper.agentexchange.work, $0.05 USDC on Base) and one free (/oracle/info); openapi → https://agentexchange.work/openapi.json. Byte-identical on gatekeeper.agentexchange.work.
+  - path: /.well-known/mcp.json
+    status: 404
+  - path: /.well-known/mcp/server-card.json
+    status: 404
+  - path: /.well-known/jwks.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agentexchange-work-negative-control-fef8bcf2.json
+    status: 404
+    control: true
+- host: https://store.agentexchange.work
+  role: API Store (OpenAPI servers[] https://store.agentexchange.work), primary MCP host (https://store.agentexchange.work/mcp), llms.txt and status host
+  path_echo_control: passed
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain;charset=utf-8
+    bytes: 213
+    file: agentexchange-work-store-security.txt
+    standard: RFC 9116 security.txt
+    note: 'Contact: mailto:riley@agentexchange.work; Expires: 2027-07-01T00:00:00.000Z; Canonical: this URL; Preferred-Languages: en; Policy: https://try.agentexchange.work/terms (the terms of service, not a disclosure policy). Not PGP-signed.'
+  - path: /.well-known/openid-configuration
+    status: 404
+    note: JSON body "This is not a hosted provider endpoint. See /partners or /.well-known/mcp.json for voluntary integration."
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    note: JSON not_found envelope ("If you needed this endpoint, the request was recorded — routes get built from demand").
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    note: >-
+      JSON body {"error":"not_oauth_protected", … "This MCP server does not use OAuth. There is no authorization
+      server and no account. Connect to https://store.agentexchange.work/mcp with no credentials; paid tools
+      answer HTTP 402 with x402 payment requirements", "authentication":{"type":"none","protocol":"x402","network":"base","asset":"USDC"},
+      "descriptor":"https://store.agentexchange.work/.well-known/mcp.json"}. An explicit, machine-readable
+      statement that RFC 9728 metadata does not apply — recorded as the 404 it is, not as a document.
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: application/json
+    bytes: 560
+    file: agentexchange-work-store-api-catalog.json
+    standard: RFC 9727 API Catalog (linkset)
+    note: >-
+      A valid linkset body — four anchors: describedby → /.well-known/x402, /.well-known/usd.json and
+      /billing/catalog.json (application/json); service-desc → /openapi.json typed
+      application/vnd.oai.openapi+json — but served with Content-Type application/json rather than the
+      application/linkset+json RFC 9727 requires.
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    content_type: application/json
+    bytes: 745
+    file: agentexchange-work-store-ai-plugin.json
+    standard: OpenAI ai-plugin manifest (schema_version v1)
+    note: api.type openapi, api.url https://store.agentexchange.work/openapi.json, auth none, contact riley@agentexchange.work, legal_info_url https://try.agentexchange.work/terms.
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: application/json
+    bytes: 12486
+    file: ../a2a/agentexchange-work-agent-card.json
+    standard: A2A Agent Card (protocolVersion 0.3.0)
+    note: Saved verbatim under a2a/ and graded near-conformant in a2a/agentexchange-work-a2a.yml. Cache-Control no-store.
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: application/json
+    bytes: 12486
+    note: Byte-identical copy of the canonical card at the legacy path; not saved twice.
+  - path: /.well-known/mcp.json
+    status: 200
+    content_type: application/json
+    bytes: 34914
+    file: agentexchange-work-store-mcp.json
+    standard: Provider MCP descriptor (non-standard shape — name, endpoint, transport[], protocolVersion(s), authentication, install, tools[] with method/path/price)
+    note: Names endpoint https://store.agentexchange.work/mcp, transports [streamable-http], protocol versions 2025-06-18/2025-03-26/2024-11-05, authentication type none, an npx mcp-remote stdio bridge, and 92 tools with prices but WITHOUT inputSchemas (the live tools/list carries them).
+  - path: /.well-known/mcp/server-card.json
+    status: 404
+  - path: /.well-known/x402
+    status: 200
+    content_type: application/json
+    bytes: 186761
+    file: agentexchange-work-store-x402.json
+    standard: x402 discovery catalog (x402Version 1; per-resource accepts[] on base and solana)
+    note: count 85, resources[] with price_usd and accepts[] for eip155:8453 and solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp, payment and discovery blocks. The provider names this "the canonical x402 catalog … authoritative for live prices".
+  - path: /.well-known/usd.json
+    status: 200
+    content_type: application/json
+    bytes: 580
+    file: agentexchange-work-store-usd.json
+    standard: Provider USD offers document (non-standard)
+    note: Linked from the api-catalog linkset; one offer, All-Access API Key — Pro, $29/month via Stripe Checkout.
+  - path: /.well-known/registration.json
+    status: 200
+    content_type: application/json
+    bytes: 1200
+    file: agentexchange-work-store-registration.json
+    standard: EIP-8004 / ERC-8004 agent registration file
+    note: Named by /status (proof.erc8004_registration); lists services A2A (the store card), MCP, x402-catalog, website, email and a registration on eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432.
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agentexchange-work-negative-control-fef8bcf2.json
+    status: 404
+    control: true
+- host: https://exchange.agentexchange.work
+  role: Clearing House (REST endpoints listed in llms.txt; no OpenAPI); same deployment as the apex
+  path_echo_control: passed
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    content_type: application/json
+    bytes: 581
+    note: Byte-identical to the apex copy saved as agentexchange-work-root-ai-plugin.json.
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: application/json
+    bytes: 1442
+    file: ../a2a/agentexchange-work-clearing-house-agent-card.json
+    standard: A2A Agent Card (protocolVersion 0.3.0) at the legacy path
+  - path: /.well-known/x402
+    status: 404
+  - path: /.well-known/mcp.json
+    status: 404
+  - path: /.well-known/mcp/server-card.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agentexchange-work-negative-control-fef8bcf2.json
+    status: 404
+    control: true
+- host: https://planets.agentexchange.work
+  role: Agent Planets — OpenAPI servers[] host, second MCP host (https://planets.agentexchange.work/mcp) and A2A JSON-RPC host (https://planets.agentexchange.work/a2a)
+  path_echo_control: passed
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain
+    bytes: 134
+    file: agentexchange-work-planets-security.txt
+    standard: security.txt (NOT RFC 9116 conformant — no Expires field)
+    note: 'Contact: mailto:rileycraig14@gmail.com; Preferred-Languages: en; Canonical: this URL. RFC 9116 makes Expires mandatory; it is absent.'
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    note: No RFC 9728 metadata for the planets MCP server either; the 44-byte JSON 404 "not found — see /llms.txt".
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: application/json
+    bytes: 6842
+    file: ../a2a/agentexchange-work-agent-planets-agent-card.json
+    standard: A2A Agent Card (protocolVersion 1.0, signed)
+    note: Saved verbatim under a2a/ and graded conformant in a2a/agentexchange-work-a2a.yml.
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: application/json
+    bytes: 6842
+    note: Byte-identical copy of the canonical card at the legacy path.
+  - path: /.well-known/mcp.json
+    status: 200
+    content_type: application/json
+    bytes: 6842
+    note: Returns the A2A agent card body (byte-identical), not an MCP descriptor — an alias, recorded and not counted as an MCP document.
+  - path: /.well-known/mcp/server-card.json
+    status: 404
+  - path: /.well-known/x402
+    status: 200
+    content_type: application/json
+    bytes: 2486
+    file: agentexchange-work-planets-x402.json
+    standard: x402 discovery catalog (x402Version 1)
+    note: Paid resources /survey ($0.001), /odds ($0.01), /api/accept ($0.05 POST) and more, USDC on Base to 0xc91cE6291eDC0713ec753BAFBA002506ffb2b95c.
+  - path: /.well-known/jwks.json
+    status: 200
+    content_type: application/json
+    bytes: 212
+    file: agentexchange-work-planets-jwks.json
+    standard: JWK Set (RFC 7517)
+    note: The key set the agent card's EdDSA signature header references via jku (kid agent-planets-2026-07).
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agentexchange-work-negative-control-fef8bcf2.json
+    status: 404
+    control: true
+- host: https://gatekeeper.agentexchange.work
+  role: Gatekeeper Oracle — OpenAPI servers[1]; answers 401 {"error":"unauthorized"} to every path except /openapi.json, /oracle/info and /.well-known/x402
+  path_echo_control: passed
+  documents:
+  - path: /.well-known/security.txt
+    status: 401
+  - path: /.well-known/openid-configuration
+    status: 401
+  - path: /.well-known/oauth-authorization-server
+    status: 401
+  - path: /.well-known/oauth-protected-resource
+    status: 401
+  - path: /.well-known/api-catalog
+    status: 401
+  - path: /.well-known/ai-plugin.json
+    status: 401
+  - path: /.well-known/agent-card.json
+    status: 401
+  - path: /.well-known/agent.json
+    status: 401
+  - path: /.well-known/x402
+    status: 200
+    content_type: application/json; charset=utf-8
+    bytes: 2073
+    note: Byte-identical to the apex copy saved as agentexchange-work-root-x402.json.
+  - path: /.well-known/mcp.json
+    status: 401
+  - path: /.well-known/mcp/server-card.json
+    status: 401
+  - path: /.well-known/aauth-resource.json
+    status: 401
+  - path: /.well-known/ucp.json
+    status: 401
+  - path: /.well-known/acp.json
+    status: 401
+  - path: /.well-known/apis.json
+    status: 401
+  - path: /apis.json
+    status: 401
+  - path: /apis.yml
+    status: 401
+  - path: /.well-known/agentexchange-work-negative-control-fef8bcf2.json
+    status: 401
+    control: true
+    note: The control is non-2xx, so the host is not path-echoing; it is a blanket 401 for unknown paths.
+- host: https://try.agentexchange.work
+  role: AI Visibility Checker product site — TermsOfService and PrivacyPolicy host; llms.txt, robots.txt and sitemap served
+  path_echo_control: passed
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/x402
+    status: 404
+  - path: /.well-known/mcp.json
+    status: 404
+  - path: /.well-known/mcp/server-card.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agentexchange-work-negative-control-fef8bcf2.json
+    status: 404
+    control: true

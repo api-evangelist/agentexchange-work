@@ -1,0 +1,77 @@
+generated: '2026-09-19'
+method: derived
+probed: true
+source: openapi/agentexchange-work-api-store-openapi.json (+ the planets and gatekeeper specs) and live unauthenticated
+  responses on 2026-09-19
+format: provider-specific JSON envelopes; NOT RFC 9457 (no application/problem+json anywhere)
+summary: 'The store contract declares exactly one error response per paid operation — 402 Payment Required, 85 declarations,
+  none with a body schema — and nothing else; the planets and gatekeeper specs declare 402 the same way. The runtime
+  error surface is richer than the contract: an x402 v1 JSON envelope with PAYMENT-REQUIRED and WWW-Authenticate
+  headers on 402, a {error, path, message} JSON envelope on 404 that tells the caller where the catalog is, a Cloudflare
+  text/plain ''error code: 1015'' on 429 with no Retry-After, a blanket JSON 401 on the gatekeeper host, and a documented-in-prose
+  503 whose settlement is cancelled. No error codes catalog, no request-id header and no problem+json are published.'
+observed_problems:
+- status: 402
+  title: Payment Required (x402 challenge)
+  format: x402 v1 JSON envelope + PAYMENT-REQUIRED and WWW-Authenticate (MPP) headers
+  observed_on: GET https://store.agentexchange.work/chain/block-number?chain=base and GET https://store.agentexchange.work/chain/gas?chain=base
+    (2026-09-19)
+  body_shape: '{x402Version: 1, error: "Payment required", accepts: [{scheme: exact, network, maxAmountRequired,
+    resource, description, mimeType, payTo, maxTimeoutSeconds, asset, extra, outputSchema}], resource: {url, description,
+    mimeType, serviceName, tags}, extensions: {bazaar: {info: {input, output}}}}'
+  headers:
+  - 'PAYMENT-REQUIRED: <base64 x402 v2 envelope>'
+  - 'WWW-Authenticate: MPP <base64 envelope>'
+  - 'Link: <https://store.agentexchange.work/ask>; rel="alternate"; type="text/html"; title="Instant AI answer -
+    0.99 USD by card"'
+  remediation: Sign a USDC authorization for accepts[].maxAmountRequired (atomic units, 6 decimals) on the chosen
+    rail and retry the identical request with X-PAYMENT (x402 v1) or PAYMENT-SIGNATURE (x402 v2).
+  declared_in_spec: responses.402 "Payment Required" on all 85 paid operations, with no content schema
+- status: 404
+  title: Route not found
+  format: 'JSON envelope {error: "not_found", path, message}'
+  observed_on: GET https://store.agentexchange.work/a2a, /v1/openapi.json, /changelog and every unknown /.well-known/
+    path (2026-09-19)
+  body_shape: '{"error":"not_found","path":"/a2a","message":"No such route. GET /samples for everything this store
+    sells, or /openapi.json for the full catalogue. If you needed this endpoint, the request was recorded — routes
+    get built from demand."}'
+  remediation: Consult GET /docs or /openapi.json for the live route list.
+  declared_in_spec: not declared
+- status: 404
+  title: Not OAuth protected (informational 404)
+  format: 'JSON {error: "not_oauth_protected", …, authentication: {type: none, protocol: x402}}'
+  observed_on: GET https://store.agentexchange.work/.well-known/oauth-protected-resource
+  remediation: Connect to the MCP endpoint with no credentials; paid tools return x402 requirements.
+  declared_in_spec: not declared
+- status: 429
+  title: Rate limited at the edge
+  format: 'text/plain, 17 bytes: "error code: 1015" (a Cloudflare rate-limiting rule)'
+  observed_on: A burst of ~45 requests in ~10 seconds across store.agentexchange.work and planets.agentexchange.work
+    on 2026-09-19; a later paced burst of 40 requests in 3 seconds to the cached GET /pulse did not trigger it
+  headers:
+  - not captured on the observed 429 — no RateLimit-* or Retry-After header is documented
+  remediation: Back off and retry; no Retry-After value is published.
+  declared_in_spec: not declared
+- status: 401
+  title: Unauthorized (gatekeeper host default)
+  format: 'JSON {error: "unauthorized"}'
+  observed_on: Every path on https://gatekeeper.agentexchange.work other than /openapi.json, /oracle/info and /.well-known/x402
+  remediation: Only the documented oracle paths are public on this host.
+  declared_in_spec: not declared
+- status: 503
+  title: All backing models failed (settlement cancelled)
+  format: stated in prose
+  observed_on: 'not observed; stated in the Gatekeeper Oracle OpenAPI x-guidance: "If every backing model fails
+    the route returns 503 and settlement is cancelled, so a caller is never charged for silence"'
+  remediation: Retry later; the provider states no charge is settled for a 503.
+  declared_in_spec: x-guidance prose only; responses declare 200 and 402
+declared_problem_counts:
+  402: 85
+declared_problems_note: 'Every declared 4xx is the same 402 "Payment Required" row; the per-operation list is omitted
+  for brevity and is reproducible from the spec (responses.402 on 85 operations). Planets: 402 on GET /survey, GET
+  /odds. Gatekeeper: 402 on GET/POST /oracle.'
+envelope:
+  x402_402: x402Version, error, accepts[], resource, extensions
+  not_found_404: error, path, message
+  unauthorized_401: error
+  rate_limited_429: plain text

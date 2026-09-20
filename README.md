@@ -64,5 +64,13 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Agent Exchange is a company surfaced via the API Evangelist harvest backlog (source: a2a-registry) and added to the network as a stub for full-pipeline profiling.
-- https://agentexchange.work/
+Agent Exchange (agentexchange.work) is a solo-operator US software venture, run by Riley Craig, that ships AI-visibility (GEO) audits for businesses and pay-per-call infrastructure for autonomous AI agents. This profile was built on 2026-09-19 from the company's own public hosts, with nothing behind a login and no paid call made.
+
+- Website: https://agentexchange.work/
+- API Store (OpenAPI 3.1, 86 operations, x402-priced): https://store.agentexchange.work/openapi.json
+- MCP servers: https://store.agentexchange.work/mcp (92 tools) and https://planets.agentexchange.work/mcp (12 tools)
+- A2A agent cards: planets (conformant, signed), store and clearing house (near-conformant) — see `a2a/`
+- Discovery: `/.well-known/x402`, `api-catalog`, `ai-plugin.json`, `mcp.json`, `security.txt`, `registration.json` (ERC-8004), `llms.txt` on six hosts — see `well-known/`
+- Contact published by the provider: riley@agentexchange.work
+
+What is here: `openapi/` (three verbatim specs), `overlays/`, `mcp/` (manifest, live tool lists, tool crosswalk), `a2a/` (three verbatim cards + graded manifest), `well-known/`, `llms/`, `skills/` (two provider-published, three generated), `authentication/`, `conventions/` (idempotency: none; reversibility: none), `errors/`, `lifecycle/`, `conformance/`, `plans/` (probed from the x402 and billing catalogs), `rate-limits/`, `sandbox/`, `packages/` (none found), `components/`, `data-model/`, `regulatory/`, `agentic-access/`, `security/`.

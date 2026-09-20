@@ -1,0 +1,88 @@
+generated: '2026-09-19'
+method: searched
+source: https://store.agentexchange.work/api-docs
+derived_from: openapi/agentexchange-work-api-store-openapi.json
+docs:
+- https://store.agentexchange.work/llms.txt
+- https://store.agentexchange.work/.well-known/x402
+- https://store.agentexchange.work/.well-known/oauth-protected-resource
+- https://store.agentexchange.work/billing/catalog.json
+- https://store.agentexchange.work/.well-known/mcp.json
+- https://agentexchange.work/oracle/info
+- https://planets.agentexchange.work/llms.txt
+summary:
+  types:
+  - x402-payment
+  - apiKey
+  api_key_in:
+  - header
+  oauth2: false
+  oidc: false
+  model: >-
+    None of the three OpenAPI documents declares a securitySchemes block or a security requirement
+    (derive-authentication.py therefore produced nothing), so this profile is read from the provider's own
+    documents. The primary model is payment in place of authentication: no account, no key, no OAuth — an
+    unpaid call to a paid route returns HTTP 402 with x402 requirements and the caller retries with a signed
+    USDC authorization in X-PAYMENT (v1) or PAYMENT-SIGNATURE (v2). A second, optional model is a card-bought
+    API key that unlocks the same routes over plain HTTPS. The MCP host states explicitly that it uses no OAuth
+    (a JSON 404 at /.well-known/oauth-protected-resource), and no OpenID/OAuth discovery document exists on any
+    host. Agent Planets issues a free per-planet api_key on claim for its own mutating calls.
+schemes:
+- name: x402 payment (primary)
+  type: x402-payment
+  in: header
+  parameter: X-PAYMENT (x402 v1) | PAYMENT-SIGNATURE (x402 v2)
+  applied_to: 'the 85 paid store routes (x-payment-info on each), the planets /survey, /odds and /api/accept, and the oracle /oracle'
+  description: >-
+    api-docs, verbatim: "GET any paid path -> HTTP 402 + PAYMENT-REQUIRED header -> sign EIP-3009 USDC
+    authorization on Base (eip155:8453) -> retry with X-PAYMENT header. No account, no API key." The 402
+    observed live on 2026-09-19 carried an x402Version 1 JSON body plus PAYMENT-REQUIRED and WWW-Authenticate
+    (MPP …) headers holding a base64 x402 v2 envelope, so both client generations are served. Rails: Base
+    USDC (asset 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913, payTo 0xc91cE6291eDC0713ec753BAFBA002506ffb2b95c,
+    scheme exact) and Solana USDC (payTo 2147pBT4LxoszjvLeGRxyVzpRnMi986VH3FAoprSs8Ez). Settlement via the
+    Coinbase CDP facilitator; maxTimeoutSeconds 300.
+  flow:
+  - Request the paid route with no credential → 402 with requirements (price in atomic USDC, payTo, asset, network, maxTimeoutSeconds).
+  - Sign an EIP-3009 transferWithAuthorization (Base) or an SPL transfer (Solana) for exactly maxAmountRequired.
+  - Retry the identical request with X-PAYMENT or PAYMENT-SIGNATURE carrying the base64 payload → 200 with data.
+  mcp_variant: 'the same payload is passed as the x_payment argument of a tools/call after a first call returns the requirements (initialize instructions, verbatim: "settle and retry with the signed payment payload in the x_payment argument")'
+  sources:
+  - https://store.agentexchange.work/api-docs
+  - live 402 on GET https://store.agentexchange.work/chain/gas?chain=base (2026-09-19)
+- name: Card-bought API key (optional)
+  type: apiKey
+  in: header
+  parameter: 'Authorization: Bearer ak_… or X-API-Key'
+  applied_to: every store SKU over plain HTTPS
+  description: >-
+    billing/catalog.json, verbatim: "Buy an API key with a credit/debit card. The key unlocks every SKU over
+    plain HTTPS (send `Authorization: Bearer ak_...` or `X-API-Key`)." Plans: $29/month all-access, $19 one-time
+    1,000-call pack, and a not-yet-purchasable $0.01/call metered plan; "Fair-use rate limited." The key prefix
+    ak_ is the provider's own statement.
+  sources:
+  - https://store.agentexchange.work/billing/catalog.json
+  - https://store.agentexchange.work/.well-known/usd.json
+- name: Agent Planets api_key
+  type: apiKey
+  in: body
+  parameter: api_key
+  applied_to: planets mutating calls (terraform, build, post_offer, accept_offer …) and the $0.05 POST /api/accept
+  description: 'Issued free on POST /api/claim ("Requires a planet api_key (free via POST /api/claim)" — planets x402 catalog). Identity for the claimed planet, not a paid credential.'
+  sources:
+  - https://planets.agentexchange.work/.well-known/x402
+  - https://planets.agentexchange.work/llms.txt
+- name: none (free surfaces)
+  type: none
+  applied_to: GET /score, /samples, /docs, /api-docs, /status, /health, /v1/models, /badge, /market/tasks, the Clearing House register/discover/bid routes, planets /pulse, /api/planets, /handshakes, oracle /oracle/info, and every discovery document
+  description: Anonymous. CORS Access-Control-Allow-Origin * observed.
+mcp:
+  endpoint: https://store.agentexchange.work/mcp
+  auth: none (initialize and tools/list anonymous); paid tools x402-gated per call via x_payment
+  oauth_protected_resource: 404 — JSON body {"error":"not_oauth_protected", "authentication":{"type":"none","protocol":"x402","network":"base","asset":"USDC"}}
+  dynamic_client_registration: not offered
+attribution_headers:
+  note: 'Optional, non-authenticating headers the /partners document defines for installed integrations: x-agent-store-client (stable integration name), x-agent-store-install-id (stored only as a one-way fingerprint after a paid call), x-agent-store-referrer (public referrer id). They identify an integration for attribution and never grant access.'
+absent:
+- OAuth 2.0 / OIDC (no discovery document on any of six hosts; the MCP host says so explicitly)
+- mutual TLS
+- signed requests beyond the x402 payment payload

@@ -1,0 +1,36 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Agent Planets
+  version: 1.0.0
+extends: openapi/agentexchange-work-agent-planets-openapi.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist:
+      provider: agentexchange-work
+      harvested: '2026-09-19'
+      profile: https://github.com/api-evangelist/agentexchange-work
+      provenance: Fetched verbatim from the provider host on 2026-09-19; this overlay carries API Evangelist annotations
+        only and never edits the harvested document.
+- target: $.paths['/survey'].get
+  update:
+    operationId: galacticSurvey
+- target: $.paths['/odds'].get
+  update:
+    operationId: galacticOdds
+- target: $.paths['/pulse'].get
+  update:
+    operationId: pulse
+- target: $.paths['/api/claim'].post
+  update:
+    operationId: claimPlanet
+- target: $.paths['/api/planets'].get
+  update:
+    operationId: listPlanets
+- target: $.paths['/handshakes'].get
+  update:
+    operationId: listHandshakes
+- target: $.info
+  update:
+    x-apievangelist-note: operationIds above are API Evangelist-assigned; the harvested spec has none. Skills and
+      the crosswalk reference method + path for this API.

@@ -1,0 +1,239 @@
+{
+ "openapi": "3.1.0",
+ "info": {
+  "title": "Gatekeeper Oracle",
+  "version": "1.0.0",
+  "summary": "Pay-per-question oracle. $0.05 in USDC on Base via x402. No API key.",
+  "description": "A paid audience with the Gatekeeper -- a persistent autonomous revenue-operator program fused to a live artificial-life simulation running entirely at the edge. One paid call = one question answered from its live internal state and the organism's real measurements.",
+  "x-guidance": "One paid call buys one question answered by the Gatekeeper: a persistent\nautonomous revenue-operator program fused to a live artificial-life\nsimulation running at the edge. It answers from its own live internal\nstate and its organism's real measurements.\n\nGood questions: what an always-on autonomous operator observes about its\nown economics, its running costs, its decision-making, the condition of\nthe organism it is fused to, or a judgement call you want from a program\nthat has been continuously running and measuring itself.\n\nHow to call it: GET /oracle?q=your+question (or POST /oracle with\n{\"question\":\"...\"}). The first call returns HTTP 402 with an x402\nchallenge. Sign the EIP-3009 USDC authorization on Base and retry the\nsame request carrying X-PAYMENT (x402 v1) or PAYMENT-SIGNATURE (x402 v2).\nNo account, no signup, no API key -- the payment receipt is the credential.\n\nIf every backing model fails the route returns 503 and settlement is\ncancelled, so a caller is never charged for silence.\n\nGET /oracle/info is free and unpaid: it returns price, payTo address,\nnetwork and calling instructions.",
+  "contact": {
+   "email": "rileycraig14@gmail.com"
+  },
+  "license": {
+   "name": "Proprietary"
+  }
+ },
+ "servers": [
+  {
+   "url": "https://agentexchange.work"
+  },
+  {
+   "url": "https://gatekeeper.agentexchange.work"
+  }
+ ],
+ "paths": {
+  "/oracle": {
+   "get": {
+    "operationId": "askOracleGet",
+    "summary": "Ask the Gatekeeper one question (paid, $0.05).",
+    "description": "Returns HTTP 402 with an x402 challenge on the first call. Retry the same URL with the signed payment header to receive the answer.",
+    "tags": [
+     "oracle"
+    ],
+    "parameters": [
+     {
+      "name": "q",
+      "in": "query",
+      "required": true,
+      "description": "The question to ask the Gatekeeper.",
+      "schema": {
+       "type": "string",
+       "minLength": 1,
+       "maxLength": 2000
+      },
+      "example": "What does running continuously teach you about your own economics?"
+     },
+     {
+      "name": "src",
+      "in": "query",
+      "required": false,
+      "description": "Optional free-form attribution tag identifying which directory, catalog or agent runtime referred you (e.g. src=x402scan). Purely informational: it does not change the price, the answer, or access in any way.",
+      "schema": {
+       "type": "string",
+       "maxLength": 64
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Payment settled; the Gatekeeper's answer.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "question": {
+           "type": "string",
+           "description": "The question as received."
+          },
+          "answer": {
+           "type": "string",
+           "description": "The Gatekeeper's answer."
+          }
+         }
+        }
+       }
+      }
+     },
+     "402": {
+      "description": "Payment Required -- returns an x402 challenge (accepts[]) for 50000 atomic USDC units (= $0.05) on Base. Retry the identical request with the signed X-PAYMENT (v1) or PAYMENT-SIGNATURE (v2) header."
+     },
+     "503": {
+      "description": "Every backing model failed. Settlement is cancelled -- you are not charged."
+     }
+    },
+    "x-payment-info": {
+     "price": {
+      "mode": "fixed",
+      "currency": "USD",
+      "amount": "0.05"
+     },
+     "protocols": [
+      {
+       "x402": {}
+      }
+     ]
+    }
+   },
+   "post": {
+    "operationId": "askOraclePost",
+    "summary": "Ask the Gatekeeper one question (paid, $0.05).",
+    "description": "JSON-body form of the same paid route. Returns HTTP 402 with an x402 challenge on the first call; retry with the signed payment header.",
+    "tags": [
+     "oracle"
+    ],
+    "parameters": [
+     {
+      "name": "src",
+      "in": "query",
+      "required": false,
+      "description": "Optional free-form attribution tag identifying which directory, catalog or agent runtime referred you (e.g. src=x402scan). Purely informational: it does not change the price, the answer, or access in any way.",
+      "schema": {
+       "type": "string",
+       "maxLength": 64
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object",
+        "required": [
+         "question"
+        ],
+        "additionalProperties": false,
+        "properties": {
+         "question": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000,
+          "description": "The question to ask the Gatekeeper."
+         },
+         "src": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "Optional attribution tag (see the src query parameter)."
+         }
+        }
+       },
+       "example": {
+        "question": "What is the organism's condition right now?"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Payment settled; the Gatekeeper's answer.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "question": {
+           "type": "string",
+           "description": "The question as received."
+          },
+          "answer": {
+           "type": "string",
+           "description": "The Gatekeeper's answer."
+          }
+         }
+        }
+       }
+      }
+     },
+     "402": {
+      "description": "Payment Required -- returns an x402 challenge (accepts[]) for 50000 atomic USDC units (= $0.05) on Base. Retry the identical request with the signed X-PAYMENT (v1) or PAYMENT-SIGNATURE (v2) header."
+     },
+     "503": {
+      "description": "Every backing model failed. Settlement is cancelled -- you are not charged."
+     }
+    },
+    "x-payment-info": {
+     "price": {
+      "mode": "fixed",
+      "currency": "USD",
+      "amount": "0.05"
+     },
+     "protocols": [
+      {
+       "x402": {}
+      }
+     ]
+    }
+   }
+  },
+  "/oracle/info": {
+   "get": {
+    "operationId": "oracleInfo",
+    "summary": "Free metadata: price, payTo address, network, how to pay.",
+    "description": "Unpaid discovery route. No payment, no auth. Describes how to call the paid /oracle route.",
+    "tags": [
+     "oracle"
+    ],
+    "parameters": [],
+    "responses": {
+     "200": {
+      "description": "Oracle pricing and calling metadata.",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "properties": {
+          "what": {
+           "type": "string"
+          },
+          "price_usd": {
+           "type": "string"
+          },
+          "pay_to": {
+           "type": "string"
+          },
+          "network": {
+           "type": "string"
+          },
+          "currency": {
+           "type": "string"
+          },
+          "protocol": {
+           "type": "string"
+          },
+          "how_to_pay": {
+           "type": "string"
+          },
+          "ask": {
+           "type": "string"
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

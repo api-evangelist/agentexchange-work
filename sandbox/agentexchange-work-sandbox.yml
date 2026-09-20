@@ -1,0 +1,35 @@
+generated: '2026-09-19'
+method: searched
+source: https://store.agentexchange.work/samples (live GET, 2026-09-19) and https://store.agentexchange.work/llms.txt
+docs:
+- https://store.agentexchange.work/samples
+- https://store.agentexchange.work/studio
+- https://store.agentexchange.work/llms.txt
+- https://planets.agentexchange.work/llms.txt
+summary: >-
+  There is no sandbox in the test-mode sense: no test keys, no test network, no test wallet and no
+  time simulation — every paid call settles real USDC on Base mainnet (eip155:8453) or Solana mainnet
+  through the Coinbase CDP facilitator. What the provider publishes instead is a "try before you pay" layer:
+  GET /samples returns illustrative snapshots of every paid product, each with the exact x402 call that buys
+  the live version, and the provider states plainly that "Free samples below are illustrative snapshots. Paid
+  calls return LIVE data." A handful of free live routes let an agent exercise the real request path without
+  paying — GET /score (the flagship AI-visibility score, keyless and CORS-enabled), GET /v1/models, the
+  Clearing House browse/register/bid routes, and on planets POST /api/claim, GET /pulse, GET /api/planets.
+  An unpaid GET of any paid route is itself a safe rehearsal: it returns the 402 envelope with the exact price,
+  payTo and asset and settles nothing. No dry-run flag, ?trial= parameter or test-mode header exists.
+test_vs_live:
+  separation: none — one environment, mainnet settlement
+  test_keys: none (there are no keys by default; the card-bought ak_ key is live)
+  test_network: none — x402 requirements name eip155:8453 (Base mainnet) and solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp (Solana mainnet)
+  time_simulation: none
+free_rehearsal_surfaces:
+- {surface: 'GET https://store.agentexchange.work/samples', cost: free, what: 'illustrative snapshot of every paid product + the exact upgrade call', live_data: false}
+- {surface: 'GET https://store.agentexchange.work/score?brand=&category=', cost: free, what: 'live AI-visibility score JSON (observed 200 with brand=Stripe)', live_data: true}
+- {surface: 'GET https://store.agentexchange.work/badge?brand=&category=', cost: free, what: 'live SVG badge (observed 200, image/svg+xml)', live_data: true}
+- {surface: 'GET https://store.agentexchange.work/v1/models', cost: free, what: 'model list for the paid chat route', live_data: true}
+- {surface: 'GET <any paid route> without payment', cost: free, what: 'HTTP 402 with the exact requirements; nothing settles', live_data: false}
+- {surface: 'MCP store_samples / store_catalog / market_* free tools', cost: free, what: 'same samples and catalog over MCP', live_data: mixed}
+- {surface: 'POST https://planets.agentexchange.work/api/claim', cost: free, what: 'claim a planet — a real, persistent side effect', live_data: true}
+fixtures: none published
+magic_values: none published
+note: Nothing here was invented; every value is a route the provider documents, and no paid call was made.

@@ -1,0 +1,48 @@
+generated: '2026-09-19'
+method: probed
+source: >-
+  Live unauthenticated responses on 2026-09-19 (a Cloudflare 429 observed during discovery; response headers
+  captured on GET /samples, GET /chain/gas 402 and GET /.well-known/agent-card.json; a capped 40-request burst
+  against the cached GET https://planets.agentexchange.work/pulse), plus the only published statement —
+  billing/catalog.json and usd.json: the $29/month API key is "Fair-use rate limited".
+docs:
+- https://store.agentexchange.work/billing/catalog.json
+- https://store.agentexchange.work/.well-known/usd.json
+limit_count: 0
+summary: >-
+  No numeric rate limit is published anywhere on the surface — not in the OpenAPI (0 mentions of 429,
+  Retry-After or RateLimit), not in llms.txt, not in the MCP descriptor — and the only statement is that the
+  card-bought key is "Fair-use rate limited". The runtime signal is a Cloudflare edge rule: a burst of roughly
+  45 requests in about 10 seconds spread over store.agentexchange.work and planets.agentexchange.work drew
+  HTTP 429 text/plain "error code: 1015" (Cloudflare's rate-limiting error) for a further ~30 seconds on both
+  hosts, so the limit is shared across the *.agentexchange.work subdomains behind one zone rather than per
+  host. A later paced burst of 40 requests in 3 seconds to the 60-second-cached GET /pulse did not trigger
+  it. No RateLimit-*, X-RateLimit-* or Retry-After header appears on 200 or 402 responses, and none was
+  documented for the 429. Every paid call is also throttled economically — one x402 payment per request.
+observed:
+  throttle_status: 429
+  throttle_body: 'error code: 1015'
+  throttle_content_type: text/plain; charset=UTF-8
+  throttle_source: Cloudflare rate-limiting rule at the edge (error 1015), not the application
+  triggered_by: ~45 requests in ~10 s across two subdomains during the discovery sweep (2026-09-19)
+  not_triggered_by: 40 requests in 3.0 s to the cached GET /pulse on planets.agentexchange.work
+  recovery: succeeded again after roughly 30 seconds without action
+  headers_on_200: ['Access-Control-Allow-Origin: *', ETag, 'Cache-Control (no-store on the agent card; public max-age=60 on /pulse)', Cf-Placement]
+  headers_on_402: [PAYMENT-REQUIRED, 'WWW-Authenticate (MPP)', 'Link rel=alternate to /ask', ETag]
+  rate_limit_headers: []
+  retry_after: not present
+headers:
+  requestId: null
+  rateLimit: null
+  retryAfter: null
+responseCodes:
+  throttled: 429
+limits: []
+published_statements:
+- source: https://store.agentexchange.work/billing/catalog.json
+  text: 'One API key unlocks every Agent Exchange SKU over plain HTTPS. No crypto, no per-call signing. Fair-use rate limited.'
+- source: https://store.agentexchange.work/.well-known/usd.json
+  text: 'Card checkout. Fair-use rate limited. Cancel any time.'
+note: >-
+  limit_count is 0 because no limit is stated as a number. An agent should treat a text/plain 429 with body
+  "error code: 1015" as a shared-zone edge throttle and back off for ~30 s; there is no header to read.

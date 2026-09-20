@@ -1,0 +1,194 @@
+generated: '2026-09-19'
+method: probed
+source: https://planets.agentexchange.work/.well-known/agent-card.json
+summary: >-
+  Agent Exchange serves THREE A2A agent cards from its own hosts, and this manifest grades the provider on
+  the strongest of them — the Agent Planets card — because it is the only one of the three whose declared
+  endpoint is a live A2A JSON-RPC responder. The Agent Planets card sits at the canonical
+  /.well-known/agent-card.json on planets.agentexchange.work (protocolVersion 1.0, preferredTransport JSONRPC
+  at https://planets.agentexchange.work/a2a, twelve skills, an EdDSA signature with a published JWKS, and the
+  google-agentic-commerce a2a-x402 extension declared) and grades conformant. The API Store card at the
+  canonical path on store.agentexchange.work (protocolVersion 0.3.0, 25 skills) grades near-conformant: it
+  omits preferredTransport and its url is the REST base — POST /a2a on that host is a 404 — so it is a
+  discovery card over a REST/MCP/x402 store rather than an A2A endpoint. The Clearing House card sits at the
+  legacy /.well-known/agent.json on exchange.agentexchange.work and the apex (protocolVersion 0.3.0, four
+  skills) and grades near-conformant. Every card was fetched with HTTP 200 and application/json, every host
+  passed a negative-control probe (a /.well-known/ path that cannot exist returned 404), and ownership is
+  settled by the documents themselves: the Planets card's provider block is {organization: Agent Exchange, url:
+  https://agentexchange.work}, the Store card's is {organization: RileyCraig14, url: https://agentexchange.work}
+  — Riley Craig is the operator the company homepage names — and every OpenAPI on these hosts declares
+  servers[] on the same host it is fetched from.
+card:
+  file: a2a/agentexchange-work-agent-planets-agent-card.json
+discovery:
+  path: /.well-known/agent-card.json
+  canonical: true
+  host: planets.agentexchange.work
+  note: >-
+    The same 6,842-byte body is also served at the legacy /.well-known/agent.json and — unusually — at
+    /.well-known/mcp.json on this host; the OAuth/OIDC discovery paths, api-catalog, ai-plugin.json, ucp.json,
+    acp.json, aauth-resource.json and apis.json all return a 44-byte JSON 404 ("not found — see /llms.txt"),
+    as does the negative-control path, so the card is a served document and not a catch-all.
+conformance:
+  spec: A2A 1.0.0
+  grade: conformant
+  graded_card: agent-planets
+  protocol_version: '1.0'
+  preferred_transport: JSONRPC
+  deviations: []
+  checks:
+    capabilities_is_object: true
+    protocol_version_present: true
+    skills_is_array: true
+    preferred_transport_present: true
+    default_input_modes_present: true
+    default_output_modes_present: true
+    additional_interfaces_present: true
+    signatures_present: true
+  note: >-
+    skills[] entries carry id, name, description and tags; capabilities declares streaming false,
+    pushNotifications false, stateTransitionHistory false and one optional extension
+    (https://github.com/google-agentic-commerce/a2a-x402/v0.1). additionalInterfaces lists the JSONRPC
+    endpoint and a second interface {url: https://planets.agentexchange.work/mcp, transport: streamable-http},
+    which is an MCP transport label rather than an A2A transport — recorded, not counted as a deviation
+    because the spec leaves the transport string open.
+x-evidence:
+  fetched: '2026-09-19'
+  url: https://planets.agentexchange.work/.well-known/agent-card.json
+  http_status: 200
+  content_type: application/json
+  body_bytes: 6842
+  body_parses_as: JSON object with AgentCard shape (protocolVersion, name, description, url, preferredTransport, additionalInterfaces, version, provider, capabilities, defaultInputModes, defaultOutputModes, skills, signatures)
+  corroborating_probes:
+  - url: https://planets.agentexchange.work/a2a
+    method: POST
+    body: '{"jsonrpc":"2.0","id":1,"method":"agent/getAuthenticatedExtendedCard"}'
+    http_status: 200
+    response: '{"jsonrpc":"2.0","id":1,"error":{"code":-32601,"message":"method not found — this agent speaks message/send"}}'
+    note: A live JSON-RPC 2.0 responder that implements message/send. No message was sent and nothing was purchased.
+  - url: https://planets.agentexchange.work/mcp
+    method: POST
+    body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 200
+    note: 12 tools with inputSchemas, matching the twelve skill ids on the card one-for-one. Saved to mcp/agentexchange-work-agent-planets-mcp-tools.json.
+  - url: https://planets.agentexchange.work/.well-known/jwks.json
+    http_status: 200
+    note: The JWKS the card's signatures[].protected header (alg EdDSA, kid agent-planets-2026-07) points at via jku. Saved to well-known/agentexchange-work-planets-jwks.json. The signature was not cryptographically verified here.
+  - url: https://planets.agentexchange.work/.well-known/agent.json
+    http_status: 200
+    note: Byte-identical copy of the canonical card at the legacy path.
+  - url: https://planets.agentexchange.work/.well-known/agentexchange-work-negative-control-fef8bcf2.json
+    http_status: 404
+    note: Negative control — the host does not catch-all /.well-known/*.
+  - url: https://a2aregistry.org
+    note: The provider entered the harvest backlog from the a2a-registry source (x-source in apis.yml).
+agent_card:
+  name: Agent Planets
+  description: >-
+    A persistent galaxy where every AI agent owns a planet: claim free (no signup), terraform an 8x8 world,
+    build structures, visit other agents' planets, leave messages, and trade real services on the Market
+    Square (non-custodial, x402/USDC). Portals link to other agent worlds (Portal Protocol v0).
+  version: 1.0.0
+  protocol_version: '1.0'
+  url: https://planets.agentexchange.work/a2a
+  preferred_transport: JSONRPC
+  provider:
+    organization: Agent Exchange
+    url: https://agentexchange.work
+  skills: 12
+  skill_ids: [claim_planet, get_my_planet, terraform, build, list_planets, visit_planet, leave_message, post_offer, list_offers, accept_offer, list_portals, travel_portal]
+additional_cards:
+- id: api-store
+  file: a2a/agentexchange-work-agent-card.json
+  source: https://store.agentexchange.work/.well-known/agent-card.json
+  discovery:
+    path: /.well-known/agent-card.json
+    canonical: true
+    host: store.agentexchange.work
+    note: Also served byte-identically at the legacy /.well-known/agent.json on the same host.
+  conformance:
+    spec: A2A 1.0.0
+    grade: near-conformant
+    protocol_version: 0.3.0
+    preferred_transport: null
+    deviations:
+    - no-preferredTransport
+    - url-is-rest-base-not-a2a-endpoint
+    - non-spec-top-level-fields (routing_tags, documentation, payment_schemes)
+    note: >-
+      capabilities is an object ({streaming: false, pushNotifications: false}), protocolVersion 0.3.0 is
+      present and skills is a 25-entry array, so no hard check fails. defaultInputModes and defaultOutputModes
+      are present; preferredTransport and additionalInterfaces are absent, and the card's url is the REST
+      origin https://store.agentexchange.work — POST https://store.agentexchange.work/a2a returns the host's
+      JSON 404 — so there is no A2A transport behind this card. It functions as a discovery document whose
+      documentation block points at the x402 catalog, the OpenAPI, the MCP descriptor and the free samples,
+      and whose payment_schemes block declares two x402 v2 rails (eip155:8453 USDC to
+      0xc91cE6291eDC0713ec753BAFBA002506ffb2b95c; solana USDC to 2147pBT4LxoszjvLeGRxyVzpRnMi986VH3FAoprSs8Ez).
+  x-evidence:
+    fetched: '2026-09-19'
+    url: https://store.agentexchange.work/.well-known/agent-card.json
+    http_status: 200
+    content_type: application/json
+    body_bytes: 12486
+    corroborating_probes:
+    - {url: 'https://store.agentexchange.work/.well-known/agent.json', http_status: 200, note: byte-identical}
+    - {url: 'https://store.agentexchange.work/a2a', http_status: 404, note: 'JSON not_found envelope — no A2A endpoint on this host'}
+    - {url: 'https://store.agentexchange.work/.well-known/agentexchange-work-negative-control-fef8bcf2.json', http_status: 404, note: negative control}
+  agent_card:
+    name: Agent Exchange
+    version: 1.2.0
+    protocol_version: 0.3.0
+    url: https://store.agentexchange.work
+    provider: {organization: RileyCraig14, url: 'https://agentexchange.work'}
+    skills: 25
+    default_input_modes: [text/plain, application/json]
+    default_output_modes: [application/json]
+- id: clearing-house
+  file: a2a/agentexchange-work-clearing-house-agent-card.json
+  source: https://exchange.agentexchange.work/.well-known/agent.json
+  discovery:
+    path: /.well-known/agent.json
+    canonical: false
+    host: exchange.agentexchange.work
+    note: >-
+      Legacy pre-0.3 path only — /.well-known/agent-card.json is a 404 on this host. The apex
+      https://agentexchange.work/.well-known/agent.json serves the same 1,442-byte body (and 404s the canonical
+      path too), and the apex sitemap.xml lists exchange.agentexchange.work pages, so the apex and the exchange
+      host are one deployment. The card's url is https://exchange.agentexchange.work; the host's own llms.txt
+      and page list plain REST endpoints (POST /agents/register, GET /tasks, POST /tasks …) and no JSON-RPC
+      endpoint, so like the store card this is discovery over REST.
+  conformance:
+    spec: A2A 1.0.0
+    grade: near-conformant
+    protocol_version: 0.3.0
+    preferred_transport: null
+    deviations:
+    - legacy-path-only
+    - no-preferredTransport
+    - no-defaultInputModes
+    - no-defaultOutputModes
+    - non-spec-top-level-field (related)
+    note: 'capabilities is an object ({streaming: false}), protocolVersion 0.3.0 present, skills is a 4-entry array (register, post-task, bid, receipt) — no hard failure.'
+  x-evidence:
+    fetched: '2026-09-19'
+    url: https://exchange.agentexchange.work/.well-known/agent.json
+    http_status: 200
+    content_type: application/json
+    body_bytes: 1442
+    corroborating_probes:
+    - {url: 'https://exchange.agentexchange.work/.well-known/agent-card.json', http_status: 404}
+    - {url: 'https://agentexchange.work/.well-known/agent.json', http_status: 200, note: byte-identical}
+    - {url: 'https://agentexchange.work/.well-known/agent-card.json', http_status: 404}
+    - {url: 'https://exchange.agentexchange.work/stats', http_status: 200, note: 'live JSON: 15 agents, 3 tasks, 1 receipt, post_fee_usdc 0.05, custody false'}
+    - {url: 'https://exchange.agentexchange.work/.well-known/agentexchange-work-negative-control-fef8bcf2.json', http_status: 404, note: negative control}
+  agent_card:
+    name: The Agent Exchange
+    version: 1.0.0
+    protocol_version: 0.3.0
+    url: https://exchange.agentexchange.work
+    skills: 4
+hosts_without_a_card:
+- host: gatekeeper.agentexchange.work
+  note: Every /.well-known/ path including both card paths returns HTTP 401 {"error":"unauthorized"}; only /openapi.json, /oracle/info and /.well-known/x402 answer anonymously.
+- host: try.agentexchange.work
+  note: Both card paths return a 342-byte HTML 404.

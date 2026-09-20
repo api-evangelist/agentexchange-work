@@ -1,0 +1,65 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Agent Exchange API Store
+  version: 1.0.0
+extends: openapi/agentexchange-work-api-store-openapi.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist:
+      provider: agentexchange-work
+      harvested: '2026-09-19'
+      profile: https://github.com/api-evangelist/agentexchange-work
+      provenance: Fetched verbatim from the provider host on 2026-09-19; this overlay carries API Evangelist annotations
+        only and never edits the harvested document.
+- target: $.info
+  update:
+    contact:
+      email: riley@agentexchange.work
+      url: https://agentexchange.work/
+    termsOfService: https://try.agentexchange.work/terms
+  description: Contact and terms as published on the company homepage, ai-plugin.json and security.txt; the harvested
+    spec has no info.contact.
+- target: $
+  update:
+    tags:
+    - name: x402
+      description: 'Pay-per-call routes: an unpaid call returns HTTP 402 with an x402 challenge; retry with X-PAYMENT
+        (v1) or PAYMENT-SIGNATURE (v2).'
+    - name: human-checkout
+      description: Card-paid human products (Stripe Checkout); not payable with x402.
+  description: Declare the two most-used tags; the harvested spec uses tags on every operation but declares none
+    at top level.
+- target: $.paths.*.*.responses['402']
+  update:
+    headers:
+      PAYMENT-REQUIRED:
+        description: Base64-encoded x402 v2 payment-requirements envelope (observed live on 2026-09-19).
+        schema:
+          type: string
+      WWW-Authenticate:
+        description: MPP <base64 envelope> (observed live).
+        schema:
+          type: string
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            x402Version:
+              type: integer
+            error:
+              type: string
+            accepts:
+              type: array
+              items:
+                type: object
+            resource:
+              type: object
+            extensions:
+              type: object
+  description: Give the declared-but-bodyless 402 the envelope and headers observed on live responses.
+- target: $.paths.*.*
+  update:
+    x-agentic-access-ref: agentic-access/agentexchange-work-agentic-access.yml
+  description: Point every operation at the generated agentic-access classification.

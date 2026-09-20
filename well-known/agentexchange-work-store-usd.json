@@ -1,0 +1,17 @@
+{
+ "store": "Agent Exchange",
+ "currency": "USD",
+ "offers": [
+  {
+   "id": "pro",
+   "name": "All-Access API Key — Pro",
+   "price": 29,
+   "interval": "month",
+   "price_id": "price_1Ts6PgGmjyoulk3KlXisYoLB",
+   "checkout": "https://buy.stripe.com/eVq6oH86sfj56GF96n7ss0h",
+   "checkout_dynamic": "https://store.agentexchange.work/billing/checkout?plan=pro",
+   "catalog": "https://store.agentexchange.work/billing/catalog.json",
+   "description": "One API key unlocks every Agent Exchange SKU over plain HTTPS. Card checkout. Fair-use rate limited. Cancel any time."
+  }
+ ]
+}

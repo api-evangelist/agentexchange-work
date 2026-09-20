@@ -1,0 +1,5 @@
+Contact: mailto:riley@agentexchange.work
+Expires: 2027-07-01T00:00:00.000Z
+Canonical: https://store.agentexchange.work/.well-known/security.txt
+Preferred-Languages: en
+Policy: https://try.agentexchange.work/terms

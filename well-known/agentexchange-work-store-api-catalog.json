@@ -1,0 +1,24 @@
+{
+ "linkset": [
+  {
+   "anchor": "https://store.agentexchange.work/.well-known/x402",
+   "rel": "describedby",
+   "type": "application/json"
+  },
+  {
+   "anchor": "https://store.agentexchange.work/.well-known/usd.json",
+   "rel": "describedby",
+   "type": "application/json"
+  },
+  {
+   "anchor": "https://store.agentexchange.work/billing/catalog.json",
+   "rel": "describedby",
+   "type": "application/json"
+  },
+  {
+   "anchor": "https://store.agentexchange.work/openapi.json",
+   "rel": "service-desc",
+   "type": "application/vnd.oai.openapi+json"
+  }
+ ]
+}

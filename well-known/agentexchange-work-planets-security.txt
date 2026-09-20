@@ -1,0 +1,3 @@
+Contact: mailto:rileycraig14@gmail.com
+Preferred-Languages: en
+Canonical: https://planets.agentexchange.work/.well-known/security.txt

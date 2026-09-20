@@ -1,0 +1,79 @@
+{
+ "x402Version": 1,
+ "name": "Gatekeeper Oracle",
+ "description": "Pay-per-question oracle. One paid call = one question answered by a persistent autonomous revenue-operator program fused to a live artificial-life simulation at the edge.",
+ "openapi": "https://agentexchange.work/openapi.json",
+ "contact": {
+  "email": "rileycraig14@gmail.com"
+ },
+ "resources": [
+  {
+   "resource": "https://agentexchange.work/oracle",
+   "type": "http",
+   "method": "GET",
+   "description": "Ask the Gatekeeper one question. GET /oracle?q=... or POST {\"question\":\"...\"}.",
+   "mimeType": "application/json",
+   "accepts": [
+    {
+     "scheme": "exact",
+     "network": "base",
+     "maxAmountRequired": "50000",
+     "asset": "USDC",
+     "payTo": "0xc91cE6291eDC0713ec753BAFBA002506ffb2b95c",
+     "resource": "https://agentexchange.work/oracle",
+     "description": "One question answered by the Gatekeeper.",
+     "mimeType": "application/json"
+    }
+   ],
+   "x-payment-info": {
+    "price": {
+     "mode": "fixed",
+     "currency": "USD",
+     "amount": "0.05"
+    },
+    "protocols": [
+     {
+      "x402": {}
+     }
+    ]
+   }
+  },
+  {
+   "resource": "https://gatekeeper.agentexchange.work/oracle",
+   "type": "http",
+   "method": "GET",
+   "description": "Ask the Gatekeeper one question. GET /oracle?q=... or POST {\"question\":\"...\"}.",
+   "mimeType": "application/json",
+   "accepts": [
+    {
+     "scheme": "exact",
+     "network": "base",
+     "maxAmountRequired": "50000",
+     "asset": "USDC",
+     "payTo": "0xc91cE6291eDC0713ec753BAFBA002506ffb2b95c",
+     "resource": "https://gatekeeper.agentexchange.work/oracle",
+     "description": "One question answered by the Gatekeeper.",
+     "mimeType": "application/json"
+    }
+   ],
+   "x-payment-info": {
+    "price": {
+     "mode": "fixed",
+     "currency": "USD",
+     "amount": "0.05"
+    },
+    "protocols": [
+     {
+      "x402": {}
+     }
+    ]
+   }
+  }
+ ],
+ "free": [
+  {
+   "resource": "https://agentexchange.work/oracle/info",
+   "description": "Free metadata: price, payTo, network, how to pay."
+  }
+ ]
+}

@@ -1,0 +1,147 @@
+generated: '2026-09-19'
+method: searched
+source: https://store.agentexchange.work/openapi.json
+derived_from: openapi/agentexchange-work-api-store-openapi.json
+docs:
+- https://store.agentexchange.work/llms.txt
+- https://store.agentexchange.work/.well-known/api-catalog
+- https://store.agentexchange.work/.well-known/x402
+- https://store.agentexchange.work/.well-known/security.txt
+- https://store.agentexchange.work/robots.txt
+- https://planets.agentexchange.work/.well-known/agent-card.json
+summary: >-
+  Agent Exchange's conformance profile is the agent-commerce and agent-discovery protocol stack, and most of
+  it is verifiable from outside: a live x402 402 envelope observed on a real paid route (v1 body, v2 headers),
+  an A2A card graded conformant on planets and near-conformant on the store, two MCP servers at protocol
+  2025-06-18 answering anonymous tools/list, an RFC 9727 api-catalog linkset (wrong media type), an RFC 9116
+  security.txt on the store (a non-conformant one on planets), an OpenAI ai-plugin manifest, an ERC-8004
+  registration, an llms.txt on six hosts, and a robots.txt Content-Signal declaration. Inside its own market
+  the contract declares three interoperability signatures: an OpenAI-compatible chat-completions shape at
+  POST /v1/chat/completions (plus Anthropic-, Ollama-, Vertex-, Bedrock- and Agentforce-shaped proxy routes),
+  a Tavily-compatible search body at POST /search, and Ethereum JSON-RPC method semantics (eth_chainId,
+  eth_call, eth_getStorageAt, eth_feeHistory …) wrapped as REST under /chain/*. It declares no OAuth/OIDC, no
+  RFC 9457 problem details, no RFC 8594 sunset signalling, no Idempotency-Key and no pagination standard.
+standards:
+- id: x402
+  name: x402 HTTP payment protocol
+  version: '1 (body) / 2 (headers)'
+  conforms: true
+  verification: observed
+  evidence: >-
+    GET https://store.agentexchange.work/chain/gas?chain=base with no payment returned HTTP 402,
+    application/json, body {x402Version: 1, error: "Payment required", accepts: [{scheme: exact, network: base,
+    maxAmountRequired: "20000", asset: 0x8335…2913, payTo: 0xc91c…b95c, maxTimeoutSeconds: 300, outputSchema}],
+    resource {url, description, serviceName, tags}, extensions.bazaar}, plus headers PAYMENT-REQUIRED (base64
+    x402 v2 envelope) and WWW-Authenticate: MPP <envelope>. The provider also serves /.well-known/x402 (85
+    resources, accepts[] on base and solana) and every paid operation declares responses.402 and x-payment-info
+    {price {mode fixed, currency USD, amount}, protocols [{x402}, {mpp}]}.
+  note: The paid retry was not exercised (it requires spending USDC). The mpp protocol entry and the MPP WWW-Authenticate scheme are the provider's own labels and are recorded, not verified against a specification.
+  domain_standard_signature: true
+- id: a2a
+  name: Agent2Agent protocol
+  version: '1.0 (planets) / 0.3.0 (store, clearing house)'
+  conforms: true
+  verification: observed
+  evidence: 'a2a/agentexchange-work-a2a.yml — planets card conformant (capabilities object, protocolVersion, skills array, preferredTransport JSONRPC, signed, live message/send responder at /a2a); store and clearing-house cards near-conformant.'
+- id: mcp
+  name: Model Context Protocol
+  version: '2025-06-18'
+  conforms: true
+  verification: observed
+  evidence: 'initialize on https://store.agentexchange.work/mcp returned protocolVersion 2025-06-18, serverInfo riley-x402-agent-store 1.0.0; tools/list returned 92 tools with JSON-Schema inputSchemas; planets /mcp returned 12. See mcp/.'
+- id: rfc9727-api-catalog
+  name: RFC 9727 API Catalog
+  conforms: partial
+  verification: observed
+  evidence: 'https://store.agentexchange.work/.well-known/api-catalog returns a valid linkset (describedby → x402, usd.json, billing/catalog.json; service-desc → openapi.json typed application/vnd.oai.openapi+json) but with Content-Type application/json instead of the required application/linkset+json.'
+- id: rfc9116-security-txt
+  name: RFC 9116 security.txt
+  conforms: true
+  verification: observed
+  evidence: 'store: Contact, Expires 2027-07-01T00:00:00.000Z, Canonical, Preferred-Languages, Policy — all required fields present, not PGP-signed. planets: Contact, Canonical, Preferred-Languages but NO Expires, so the planets file is not conformant.'
+- id: openai-ai-plugin
+  name: OpenAI ai-plugin manifest (schema_version v1)
+  conforms: true
+  verification: observed
+  evidence: 'https://store.agentexchange.work/.well-known/ai-plugin.json — api.type openapi → openapi.json, auth none; apex/exchange copy has api.type none.'
+- id: erc8004
+  name: ERC-8004 / EIP-8004 agent registration
+  conforms: true
+  verification: observed
+  evidence: 'https://store.agentexchange.work/.well-known/registration.json — type https://eips.ethereum.org/EIPS/eip-8004#registration, services[] (A2A, MCP, x402-catalog, website, email), registrations[] agentRegistry eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432. On-chain state not checked.'
+- id: llms-txt
+  name: llms.txt
+  conforms: true
+  verification: observed
+  evidence: 'Served on store, apex, exchange, planets, try and compare hosts (all 200 text/plain); saved under llms/.'
+- id: openai-chat-completions
+  name: OpenAI-compatible chat completions request/response shape
+  conforms: true
+  verification: declared
+  evidence: 'openapi post_v1_chat_completions and post_api_v1_chat_completions: "OpenAI-compatible POST { messages }" returning chat.completion {id, object, choices, model, usage}; /skill.md repeats it; GET /v1/models returns an OpenAI-style {object: list, data: [...]} (observed 200).'
+  domain_standard_signature: true
+- id: anthropic-messages / ollama-generate / vertex-predict / bedrock-invoke / agentforce-messages
+  name: Vendor-shaped LLM proxy routes
+  conforms: declared
+  verification: declared
+  evidence: 'openapi post_v1_messages ("Anthropic format"), post_api_generate ("Ollama format"), post_v1_models_predict (Vertex), post_model_invoke (Bedrock), post_einstein_ai_agent_v1_agents_messages (Agentforce) — described as fallback/proxy routes mirroring each vendor path. Not exercised.'
+- id: tavily-search
+  name: Tavily-compatible search request shape
+  conforms: true
+  verification: declared
+  evidence: 'openapi post_search: "Tavily-compatible web search. POST JSON { query } — ranked results, snippets"; MCP tool tavily_search says the same.'
+  domain_standard_signature: true
+- id: ethereum-json-rpc
+  name: Ethereum JSON-RPC method semantics (eth_*) as REST
+  conforms: true
+  verification: declared
+  evidence: 'openapi chainId (eth_chainId), ethCall (eth_call), storageAt (eth_getStorageAt), estimateGas (eth_estimateGas), blockNumber (eth_blockNumber), chainBlock (eth_getBlockByNumber), chainFeeHistory (eth_feeHistory), chainNonce (eth_getTransactionCount), chainLogs — each summary names the RPC method it wraps, across Base, Ethereum, Optimism, Arbitrum, Polygon, Gnosis.'
+  domain_standard_signature: true
+- id: schema-org-organization
+  name: schema.org Organization JSON-LD
+  conforms: true
+  verification: observed
+  evidence: 'The free MCP tool store_catalog and GET https://x402-agent-store.rileycraig14.workers.dev/ return an @context https://schema.org @type Organization document with Offer entries.'
+- id: robots-content-signal
+  name: robots.txt Content-Signal
+  conforms: true
+  verification: observed
+  evidence: 'https://store.agentexchange.work/robots.txt — "Content-Signal: search=yes, ai-input=yes, ai-train=no" plus explicit Allow for 18 named AI crawlers.'
+- id: rfc7517-jwks
+  name: JWK Set (RFC 7517) for the signed agent card
+  conforms: true
+  verification: observed
+  evidence: https://planets.agentexchange.work/.well-known/jwks.json (200, 212 bytes) referenced by the card signatures[].protected jku; signature not verified here.
+- id: oauth2
+  conforms: false
+  evidence: No securitySchemes in any spec; no /.well-known/oauth-authorization-server on any host; the MCP host states it uses no OAuth.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration 404 on all six hosts.
+- id: rfc9728-protected-resource-metadata
+  conforms: false
+  evidence: 404 on both MCP hosts, with an explicit JSON statement on the store host.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: No application/problem+json anywhere; errors are provider-specific JSON envelopes.
+- id: rfc8594-sunset
+  conforms: false
+  evidence: No Sunset/Deprecation headers, no deprecation policy.
+- id: idempotency-key
+  conforms: false
+  evidence: No Idempotency-Key header or parameter on any operation.
+- id: pagination
+  conforms: false
+  evidence: No cursor/offset/page parameters; single-payload responses.
+- id: ucp / acp (agentic commerce well-knowns)
+  conforms: false
+  evidence: /.well-known/ucp.json and /.well-known/acp.json 404 on all six hosts.
+- id: aauth
+  conforms: false
+  evidence: /.well-known/aauth-resource.json 404 on all six hosts.
+- id: apis-json
+  conforms: false
+  evidence: /apis.json, /apis.yml and /.well-known/apis.json 404 on all six hosts.
+compliance_program:
+  published: false
+  note: No SOC 2 / ISO 27001 / PCI / HIPAA claim anywhere; probe-security-programs.py found no trust center and no vulnerability-disclosure program (vdp=none trust=none). No Compliance pointer is emitted.

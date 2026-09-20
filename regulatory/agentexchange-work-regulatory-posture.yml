@@ -1,0 +1,86 @@
+generated: '2026-09-19'
+method: searched
+probe: true
+source: https://try.agentexchange.work/privacy
+signals:
+  data_subject_request:
+    url: https://try.agentexchange.work/privacy
+    http_status: 200
+    channel: email
+    contact: riley@agentexchange.work
+    rights_stated: [access, delete]
+    statement_verbatim: 'Your choices — Email riley@agentexchange.work any time to access or delete the data associated with your email address.'
+    scope: 'The privacy policy covers the AI Visibility Checker at try.agentexchange.work (brand/category queries, an email if entered for a report, Google Analytics and Google Ads tags, Stripe for payments). The API Store, Clearing House and Planets hosts publish no privacy policy of their own; the store security.txt Policy line points at the try.agentexchange.work terms.'
+    pointer: DataSubjectRequest
+    note: A published statement of the access/delete rights and a working channel — modest, but the substance is present rather than the word alone, so it is recorded.
+probed_absent:
+- signal: subprocessors
+  urls:
+  - {url: 'https://agentexchange.work/legal/subprocessors', status: 404}
+  - {url: 'https://store.agentexchange.work/legal/subprocessors', status: 404}
+  - {url: 'https://try.agentexchange.work/legal/subprocessors', status: 404}
+  - {url: 'https://try.agentexchange.work/privacy', status: 200}
+  note: >-
+    The privacy policy names three processors in prose — Stripe ("Payments are processed by Stripe. We never
+    see or store your full card details"), Google Analytics and Google Ads tags — and the API surface names
+    its payment facilitator (Coinbase CDP) and hosting edge (Cloudflare, from headers). Named processors in
+    prose are not a dated subprocessor table, so the signal is not recorded.
+- signal: incident_notification
+  urls:
+  - {url: 'https://agentexchange.work/legal/dpa', status: 404}
+  - {url: 'https://store.agentexchange.work/legal/dpa', status: 404}
+  - {url: 'https://try.agentexchange.work/legal/dpa', status: 404}
+  note: No DPA and no breach-notification commitment. The terms limit liability to the amount paid and offer the service "as is".
+- signal: ai_transparency
+  urls:
+  - {url: 'https://agentexchange.work/ai/transparency', status: 404}
+  - {url: 'https://store.agentexchange.work/ai/transparency', status: 404}
+  - {url: 'https://try.agentexchange.work/ai/transparency', status: 200, note: '302 → /research, a marketing/research page about AI search — not a transparency statement'}
+  - {url: 'https://try.agentexchange.work/terms', status: 200}
+  note: >-
+    The terms state "AI outputs are probabilistic and change over time; results are informational and are
+    not a guarantee", every page carries "Not affiliated with OpenAI, Anthropic, Perplexity, or Google", and
+    GET /v1/models discloses the model behind the chat route (@cf/meta/llama-3.1-8b-instruct-fp8, owned_by
+    cloudflare-workers-ai). That is disclosure inside the product and contract, not a published AI
+    transparency statement toward end users; not recorded.
+- signal: training_data_summary
+  note: Agent Exchange is a model consumer (Cloudflare Workers AI, third-party assistants it queries), not a model provider; nothing published and none expected. The robots.txt Content-Signal ai-train=no is a crawler preference about ITS content, not a training-data summary.
+- signal: accessibility_conformance
+  urls:
+  - {url: 'https://agentexchange.work/accessibility', status: 404}
+  - {url: 'https://agentexchange.work/accessibility/vpat', status: 404}
+  - {url: 'https://store.agentexchange.work/accessibility', status: 404}
+  - {url: 'https://try.agentexchange.work/accessibility', status: 404}
+- signal: sbom
+  urls:
+  - {url: 'https://agentexchange.work/security/sbom', status: 404}
+  - {url: 'https://store.agentexchange.work/security/sbom', status: 404}
+  - {url: 'https://try.agentexchange.work/security/sbom', status: 404}
+  note: Never derived — search only.
+- signal: support_lifetime
+  urls:
+  - {url: 'https://store.agentexchange.work/status', status: 200}
+  note: No stated support period anywhere; the terms say "We may change or discontinue features."
+- signal: data_residency
+  urls:
+  - {url: 'https://agentexchange.work/docs/data-residency', status: 404}
+  - {url: 'https://store.agentexchange.work/docs/data-residency', status: 404}
+  - {url: 'https://try.agentexchange.work/docs/data-residency', status: 404}
+  note: No residency statement. Responses carry Cf-Placement remote-YYZ (Cloudflare, Toronto) — an observation, not a commitment. The homepage says the company is "based in the US".
+- signal: global_privacy_control
+  note: No published statement that Sec-GPC is honored. Not tested by sending a header.
+- signal: age_assurance
+  note: Nothing published; the machine surface has no user accounts.
+- signal: notice_and_action
+  urls:
+  - {url: 'https://agentexchange.work/legal/report-content', status: 404}
+  - {url: 'https://store.agentexchange.work/legal/report-content', status: 404}
+  - {url: 'https://try.agentexchange.work/legal/report-content', status: 404}
+  note: The public directory, Clearing House task board and planets messages are user-generated surfaces with no published report/takedown channel beyond the general contact email.
+- signal: transparency_report
+  urls:
+  - {url: 'https://agentexchange.work/transparency', status: 404}
+  - {url: 'https://store.agentexchange.work/transparency', status: 404}
+  - {url: 'https://try.agentexchange.work/transparency', status: 404}
+- signal: exit_assistance
+  note: Nothing published; there is no account data to export by design on the API surface, and the privacy policy's delete channel is the only portability-adjacent statement.
