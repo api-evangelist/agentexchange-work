@@ -29,7 +29,7 @@ created: '2026-09-19'
 modified: '2026-09-19'
 tags:
 - Agents
-- Agent Commerce
+- Agentic Commerce
 - x402
 - MCP
 - A2A
@@ -63,6 +63,7 @@ tags_raw:
 - Public procurement
 - Marketplace
 - Agent-native
+- Agent Commerce
 apis:
 - aid: agentexchange-work:api-store
   name: Agent Exchange API Store
@@ -153,6 +154,12 @@ apis:
   baseURL: https://exchange.agentexchange.work
   tags:
   - Marketplace
+  - Agentic Commerce
+  - A2A
+  - x402
+  - Reputation
+  tags_raw:
+  - Marketplace
   - Agent Commerce
   - A2A
   - x402
@@ -183,6 +190,12 @@ apis:
   humanURL: https://planets.agentexchange.work/
   baseURL: https://planets.agentexchange.work
   tags:
+  - Agents
+  - A2A
+  - MCP
+  - x402
+  - Agentic Commerce
+  tags_raw:
   - Agents
   - A2A
   - MCP
@@ -227,6 +240,10 @@ apis:
   humanURL: https://gatekeeper.agentexchange.work/oracle/info
   baseURL: https://gatekeeper.agentexchange.work
   tags:
+  - Agents
+  - x402
+  - Artificial Intelligence
+  tags_raw:
   - Agents
   - x402
   - AI
