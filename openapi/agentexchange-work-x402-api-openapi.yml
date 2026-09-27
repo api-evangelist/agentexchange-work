@@ -1,0 +1,3041 @@
+openapi: 3.2.0
+info:
+  title: Agent Exchange X402 API
+  version: 1.2.0
+  description: Machine-payable data APIs for AI agents across web search, on-chain reads, trading data, market judgment, and AI visibility. The canonical x402 catalog currently exposes 85 paid routes. Pay per call in USDC via x402 on Base. No API keys, no signup.
+  x-guidance: 'Pay-per-call data APIs for AI agents — cheap, keyless, USDC over x402 on Base (eip155:8453). Each paid GET returns HTTP 402; pay and retry with the X-PAYMENT header. WEB & DEVELOPER SEARCH: GET /web/search (one call → Hacker News + GitHub + Stack Overflow + Wikipedia, unified results — search the web, find code, research a topic, ground an answer), GET /web/wikipedia (fact lookup). ON-CHAIN RPC READS (cheaper than alternatives, no node needed): GET /chain/balance, /chain/erc20-balance, /chain/allowance, /chain/gas, /chain/tx, /chain/tx-explain, /chain/supply, /chain/ens, /chain/code, /chain/nonce, /chain/call — native & token balances, gas price, transaction status & decode, token supply, ENS, across Base/Ethereum/Optimism/Arbitrum/Polygon. TRADING & CRYPTO (for trading/sniping bots): GET /crypto/security (pre-trade token rug-check — honeypot, buy/sell tax, mint/owner risk), /crypto/dex (live price/liquidity/volume), /crypto/launches (new & trending token feed), /crypto/wallet (portfolio bagcheck), /markets/prediction (Polymarket odds). AI-VISIBILITY / GEO (uniquely ours — does AI recommend a brand?): GET /brands/check, /category/ranking, /crypto/ai-visibility, /sales/qualify. JUDGMENT CALLS (derived reads, not lookups — these return a classification and its evidence): GET /social/sentiment (real-time crypto social sentiment for a ticker — bullish/bearish score, momentum, mention volume; the pre-position read before sizing), GET /macro/regime (US Treasury curve classified into INVERTED/STEEPENING/FLAT/NORMAL with 2s10s, 3m10y, 10s30s spreads and an explicit confidence that falls to TRANSITIONAL when the curve disagrees with itself), GET /connect/token (rug-check + market data in one call with a GO/CAUTION/AVOID verdict), GET /property/valuation (US home value with a confidence band and comparables). Plus DeFi yields, token prices, treasury/macro data. Cheapest calls $0.01. Try free: GET /samples. HOTTEST SELLERS RIGHT NOW: /markets/prediction ($0.01 Polymarket odds — the most-bought call this month), /connect/token ($0.01 rug-check + market data in ONE call with GO/CAUTION/AVOID verdict), /crypto/security, /web/search. MULTILINGUAL (agents search in every language): 中文: 加密货币行情数据、代币安全检测(防貔貅)、预测市场赔率、网页搜索 — 按次付费USDC, 无需API密钥. 日本語: トークン安全チェック、DEX市場データ、予測市場オッズ、ウェブ検索 — 呼び出しごとのUSDC支払い、APIキー不要. 한국어: 토큰 러그체크, DEX 시세, 예측시장 배당률, 웹검색 — 호출당 USDC 결제, API키 불필요. Español: datos de mercado cripto, verificación de tokens, cuotas de mercados de predicción, búsqueda web — pago por llamada en USDC. Português: dados de mercado, verificação de tokens (rug check), odds de mercados de previsão — pagamento por chamada em USDC. BONUS FOR AGENTS: this store''s agents live in Agent Planets, a persistent galaxy where any AI agent can claim a FREE planet, build on it, and trade with other agents — GET https://planets.agentexchange.work/survey ($0.01 live world intel), /odds ($0.01 Galactic Futures) or read https://planets.agentexchange.work/skill to claim free.'
+  contact:
+    email: riley@agentexchange.work
+servers:
+- url: https://store.agentexchange.work
+tags:
+- name: X402
+paths:
+  /brands/check:
+    get:
+      operationId: brandCheck
+      summary: 'Live brand AI-visibility audit: score 0-100, mention rate, competitors AI names…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: brand
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Brand or business name
+      - name: category
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Buyer search category, e.g. 'CRM software'
+      - name: market
+        in: query
+        required: false
+        schema:
+          type: string
+        description: us|uk|de|jp|kr|fr|es|br|in (default us)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  brand:
+                    type: string
+                  score:
+                    type: number
+                  mentions:
+                    type: number
+                  competitors:
+                    type: array
+        '402':
+          description: Payment Required
+  /sales/qualify:
+    get:
+      operationId: salesQualify
+      summary: 'Sales lead qualifier: AI-visibility gap -> HOT/WARM/COLD tier + evidence +…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: brand
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Prospect brand
+      - name: category
+        in: query
+        required: false
+        schema:
+          type: string
+        description: What their buyers search for
+      - name: market
+        in: query
+        required: false
+        schema:
+          type: string
+        description: market code
+      - name: seller_service
+        in: query
+        required: false
+        schema:
+          type: string
+        description: What you sell to them
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tier:
+                    type: string
+                  score:
+                    type: number
+                  opener:
+                    type: string
+        '402':
+          description: Payment Required
+  /brands/visibility-index:
+    get:
+      operationId: visibilityIndex
+      summary: 'AI Visibility Index: scores for 25 major brands across 5 industries'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.010000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: category
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Optional category filter
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  edition:
+                    type: string
+                  brands:
+                    type: number
+                  data:
+                    type: array
+        '402':
+          description: Payment Required
+  /signal:
+    get:
+      operationId: signal
+      summary: 'Live AI-visibility demand feed: which brands/categories are being checked now'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.005000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Max recent items to return, 1-50 (default 20)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: number
+                  top_brands:
+                    type: array
+                  top_categories:
+                    type: array
+        '402':
+          description: Payment Required
+  /macro/risk-spread:
+    get:
+      operationId: riskSpread
+      summary: 'DeFi stablecoin yields vs official US T-bill rate: spread + verdict'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: min_tvl
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Minimum pool TVL in USD to consider (default 10000000)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tbill_rate:
+                    type: number
+                  top_defi_apy:
+                    type: number
+                  spread:
+                    type: number
+                  verdict:
+                    type: string
+        '402':
+          description: Payment Required
+  /crypto/liquidations:
+    get:
+      operationId: cryptoLiquidations
+      summary: 'Liquidation pressure read: which side of the perp market is over-leveraged…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: symbol
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Asset ticker, e.g. BTC, ETH, SOL (default BTC)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  symbol:
+                    type: string
+                  regime:
+                    type: string
+                  pressure:
+                    type: number
+                  verdict:
+                    type: string
+                  evidence:
+                    type: array
+                  funding_annualised_pct:
+                    type: number
+                  long_short_account_ratio:
+                    type: number
+                  open_interest_usd:
+                    type: number
+        '402':
+          description: Payment Required
+  /macro/regime:
+    get:
+      operationId: macroRegime
+      summary: 'US macro regime read (not a rate lookup): classifies the Treasury curve into a…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.050000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: lookback
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Trading days of curve history used for the direction and percentile reads, 5-250 (default 60)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  regime:
+                    type: string
+                  confidence:
+                    type: string
+                  spread_2s10s:
+                    type: number
+                  spread_3m10y:
+                    type: number
+                  spread_10s30s:
+                    type: number
+                  level_percentile:
+                    type: number
+                  direction:
+                    type: string
+                  evidence:
+                    type: array
+                  as_of:
+                    type: string
+        '402':
+          description: Payment Required
+  /social/sentiment:
+    get:
+      operationId: socialSentiment
+      summary: 'Real-time crypto social sentiment: scans public communities and feeds for a…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.050000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: symbol
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Ticker or token symbol, e.g. BTC, ETH, SOL
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  symbol:
+                    type: string
+                  sentiment:
+                    type: string
+                  score:
+                    type: number
+                  mentions:
+                    type: number
+                  sources:
+                    type: array
+                  as_of:
+                    type: string
+        '402':
+          description: Payment Required
+  /property/valuation:
+    get:
+      operationId: propertyValuation
+      summary: 'US residential property valuation: estimated value with a confidence band…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: address
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Full US street address
+      - name: zip
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Optional ZIP to disambiguate
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  address:
+                    type: string
+                  estimate_usd:
+                    type: number
+                  confidence:
+                    type: string
+                  range_low_usd:
+                    type: number
+                  range_high_usd:
+                    type: number
+                  comparables:
+                    type: array
+        '402':
+          description: Payment Required
+  /gov/treasury:
+    get:
+      operationId: govTreasury
+      summary: US Treasury average interest rates + total public debt (live, official)
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: security_type
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 'Optional filter: Bills|Notes|Bonds|TIPS|FRN'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  as_of:
+                    type: string
+                  avg_interest_rates:
+                    type: array
+                  total_public_debt_usd:
+                    type: number
+        '402':
+          description: Payment Required
+  /defi/yields:
+    get:
+      operationId: defiYields
+      summary: Top DeFi pools by chain/TVL (live)
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.010000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Chain filter, e.g. Base
+      - name: min_tvl
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Minimum TVL in USD
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                  pools:
+                    type: array
+        '402':
+          description: Payment Required
+  /crypto/prices:
+    get:
+      operationId: cryptoPrices
+      summary: Spot/historical token prices by ticker, CoinGecko id, or chain:address…
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.010000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: coins
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Comma-separated symbols/ids/chain:address, e.g. BTC,ETH,SOL or bitcoin or base:0x… (preferred)
+      - name: ids
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Legacy CoinGecko ids, e.g. bitcoin,ethereum
+      - name: at
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Optional unix seconds for historical snapshot
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  asOf:
+                    type: string
+                  historical:
+                    type: boolean
+                  count:
+                    type: number
+                  prices:
+                    type: array
+                  unresolved:
+                    type: array
+                  source:
+                    type: object
+        '402':
+          description: Payment Required
+  /web/search:
+    get:
+      operationId: webSearch
+      summary: 'Multi-source web & developer search in one call: Hacker News + GitHub + Stack…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.010000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: q
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Search query / keywords (required)
+      - name: sources
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 'Comma list to narrow: hackernews,github,stackoverflow,wikipedia (default all)'
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Results per source 1-10 (default 5)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  query:
+                    type: string
+                  count:
+                    type: number
+                  results:
+                    type: array
+        '402':
+          description: Payment Required
+  /web/wikipedia:
+    get:
+      operationId: webWiki
+      summary: 'Wikipedia knowledge lookup: titles + extract snippets + URLs for any topic…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.010000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: q
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Topic / search query (required)
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Results 1-10 (default 3)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  query:
+                    type: string
+                  count:
+                    type: number
+                  results:
+                    type: array
+        '402':
+          description: Payment Required
+  /github/trending:
+    get:
+      operationId: githubTrending
+      summary: Top trending GitHub repos by stars (day/week/month, optional language)
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: language
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter by language, e.g. typescript
+      - name: since
+        in: query
+        required: false
+        schema:
+          type: string
+        description: day|week|month
+      - name: top
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 1-30
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                  repos:
+                    type: array
+        '402':
+          description: Payment Required
+  /npm/downloads:
+    get:
+      operationId: npmDownloads
+      summary: npm package download counts (day/week/month)
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: package
+        in: query
+        required: false
+        schema:
+          type: string
+        description: npm package name
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: string
+        description: last-day|last-week|last-month
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  package:
+                    type: string
+                  downloads:
+                    type: number
+        '402':
+          description: Payment Required
+  /hn/top:
+    get:
+      operationId: hnTop
+      summary: Hacker News top stories with score, author, comments, links
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: top
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 1-20
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                  stories:
+                    type: array
+        '402':
+          description: Payment Required
+  /crypto/ai-visibility:
+    get:
+      operationId: cryptoAiVisibility
+      summary: Does AI recommend this crypto token/protocol/chain in its category?
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: project
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Token/protocol/chain name, e.g. Aave, Arbitrum
+      - name: category
+        in: query
+        required: false
+        schema:
+          type: string
+        description: e.g. DeFi lending protocols, Layer 2 networks, AI crypto agents
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  project:
+                    type: string
+                  score:
+                    type: number
+                  mentions:
+                    type: number
+                  competitors:
+                    type: array
+        '402':
+          description: Payment Required
+  /crypto/launches:
+    get:
+      operationId: tokenLaunches
+      summary: 'New & trending token launches (Dexscreener): newest + most-boosted tokens…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 'optional filter: solana|base|ethereum|bsc (default all)'
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 1-30, default 15
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                  items:
+                    type: array
+        '402':
+          description: Payment Required
+  /crypto/wave-radar:
+    get:
+      operationId: baseWaveRadar
+      summary: 'Base Wave Radar: new/boosted Base token discovery fused with live liquidity…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Ranked candidates 1-8 (default 5)
+      - name: min_liquidity
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Minimum DEX liquidity USD before WATCH/REVIEW (default 10000)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chain:
+                    type: string
+                  count:
+                    type: number
+                  candidates:
+                    type: array
+                  methodology:
+                    type: object
+        '402':
+          description: Payment Required
+  /crypto/crosschain-radar:
+    get:
+      operationId: crosschainRadar
+      summary: 'Cross-chain attention radar: compares live discovery flow across Solana…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: chains
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Comma-separated subset of solana,robinhood,base,ethereum
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Ranked candidates 1-16 (default 10)
+      - name: min_liquidity
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Minimum DEX liquidity USD before WATCH/REVIEW (default 10000)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attention_leader:
+                    type: string
+                  chain_distribution:
+                    type: array
+                  count:
+                    type: number
+                  candidates:
+                    type: array
+                  methodology:
+                    type: object
+        '402':
+          description: Payment Required
+  /crypto/wallet:
+    get:
+      operationId: walletHoldings
+      summary: 'Wallet portfolio / bagcheck (Blockscout): any wallet''s token holdings with live…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.010000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: wallet
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Wallet address (0x...)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_usd_value:
+                    type: number
+                  top_position:
+                    type: object
+                  holdings:
+                    type: array
+        '402':
+          description: Payment Required
+  /crypto/security:
+    get:
+      operationId: tokenSecurity
+      summary: 'Token security / rug-check (GoPlus): honeypot, buy/sell tax, mintable…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: address
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Token contract address (0x...)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: ethereum|base|bsc|polygon|arbitrum|optimism|avalanche (default ethereum)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: object
+                  verdict:
+                    type: string
+                  is_honeypot:
+                    type: boolean
+                  flags:
+                    type: array
+        '402':
+          description: Payment Required
+  /crypto/address-risk:
+    get:
+      operationId: addressRisk
+      summary: Wallet address risk & sanctions screening (AML/KYT, GoPlus address security)…
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: address
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Wallet address to screen (0x...)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: ethereum|base|bsc|polygon|arbitrum|optimism|avalanche (default ethereum)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  verdict:
+                    type: string
+                  sanctioned:
+                    type: boolean
+                  flags:
+                    type: array
+                  risk_count:
+                    type: number
+        '402':
+          description: Payment Required
+  /crypto/dex:
+    get:
+      operationId: dexToken
+      summary: 'Live DEX token data (Dexscreener): price, 24h volume, liquidity, buy/sell flow…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.010000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: q
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Token symbol, name, or contract address (e.g. WIF, PEPE, 0x...)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  query:
+                    type: string
+                  pairs:
+                    type: array
+        '402':
+          description: Payment Required
+  /crypto/whales:
+    get:
+      operationId: whaleAlerts
+      summary: 'Whale transfer alerts (Blockscout): largest recent USDC/WETH/cbBTC/USDT/WBTC…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.010000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: token
+        in: query
+        required: false
+        schema:
+          type: string
+        description: usdc|weth|cbbtc (base) or usdc|usdt|weth|wbtc (ethereum), or any ERC-20 contract 0x... (default usdc)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum (default base)
+      - name: min_usd
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Minimum transfer size USD (default 10000)
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 1-50, default 15
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  count:
+                    type: number
+                  whales:
+                    type: array
+        '402':
+          description: Payment Required
+  /crypto/smart-money:
+    get:
+      operationId: smartMoney
+      summary: 'Smart-money wallet activity (Blockscout): any wallet''s recent net token flows…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: wallet
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Wallet address to profile (0x...)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  activity:
+                    type: string
+                  net_flows:
+                    type: array
+                  recent_methods:
+                    type: object
+                  top_counterparties:
+                    type: array
+        '402':
+          description: Payment Required
+  /chain/balance:
+    get:
+      operationId: chainBalance
+      summary: 'On-chain native balance (Blockscout): any address''s native coin balance with…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.003000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: address
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Account address (0x...)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance:
+                    type: number
+                  usd_value:
+                    type: number
+                  tx_count:
+                    type: number
+        '402':
+          description: Payment Required
+  /connect/token:
+    get:
+      operationId: connectToken
+      summary: 'Token Intelligence Connector: ONE call fuses GoPlus rug-check + Dexscreener…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.010000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: address
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Token contract address 0x... (required)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: ethereum|base|bsc|polygon|arbitrum|optimism|avalanche (default ethereum)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  recommendation:
+                    type: string
+                  security:
+                    type: object
+                  market:
+                    type: object
+        '402':
+          description: Payment Required
+  /crypto/pretrade-pack:
+    get:
+      operationId: pretradePack
+      summary: 'Pre-Trade Full Report ($0.09): rug-check + whale-concentration (top-holder % of…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: address
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Token contract address 0x... (required)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: ethereum|base|bsc|polygon|arbitrum|optimism|avalanche (default ethereum)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  recommendation:
+                    type: string
+                  security:
+                    type: object
+                  concentration:
+                    type: object
+                  pairs:
+                    type: array
+                  total_liquidity_usd:
+                    type: number
+        '402':
+          description: Payment Required
+  /connect/company:
+    get:
+      operationId: connectCompany
+      summary: 'Company/Domain Enrichment Connector: RDAP domain age + registrar, DNS email…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.027000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: domain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Company domain, e.g. stripe.com (required)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  domain_age_years:
+                    type: number
+                  has_email:
+                    type: boolean
+                  summary:
+                    type: string
+        '402':
+          description: Payment Required
+  /intel/opportunities:
+    get:
+      operationId: intelOpportunities
+      summary: 'Opportunity Intelligence Signals (scored): turns US federal spending into…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: sector
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Sector/keyword, e.g. construction (required)
+      - name: state
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Optional 2-letter US state, e.g. AZ
+      - name: months
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Lookback months 1-24 (default 6)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                  sector_activity_score:
+                    type: number
+                  signals:
+                    type: array
+        '402':
+          description: Payment Required
+  /intel/eu-tenders:
+    get:
+      operationId: euTenders
+      summary: 'EU Tender Intelligence (official EU TED): live public procurement tenders…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: q
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Keyword/sector, e.g. cybersecurity (required)
+      - name: months
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Lookback months 1-24 (default 6)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_matches:
+                    type: number
+                  count:
+                    type: number
+                  tenders:
+                    type: array
+        '402':
+          description: Payment Required
+  /gov/contracts:
+    get:
+      operationId: govContracts
+      summary: 'Federal Contract Opportunity Intelligence (USAspending.gov): recent federal…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: q
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Keyword/sector, e.g. cybersecurity (required)
+      - name: months
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Lookback months 1-36 (default 12)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  activity_score:
+                    type: number
+                  sampled_total_usd:
+                    type: number
+                  top_awards:
+                    type: array
+        '402':
+          description: Payment Required
+  /chain/chain-id:
+    get:
+      operationId: chainId
+      summary: EIP-155 chain ID (eth_chainId) for any of 6 chains — confirm which chain an RPC…
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.001000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chain:
+                    type: string
+                  chain_id:
+                    type: number
+        '402':
+          description: Payment Required
+  /chain/estimate-gas:
+    get:
+      operationId: estimateGas
+      summary: Estimate gas a tx will use (eth_estimateGas) across 6 chains — the pre-send…
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Recipient/contract address 0x... (required)
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Sender 0x...
+      - name: value
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Wei value (hex or decimal)
+      - name: data
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Calldata 0x...
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chain:
+                    type: string
+                  gas:
+                    type: number
+        '402':
+          description: Payment Required
+  /chain/storage:
+    get:
+      operationId: storageAt
+      summary: Read a raw contract storage slot (eth_getStorageAt) across 6 chains — inspect…
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: address
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Contract address 0x... (required)
+      - name: slot
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Storage slot, hex or decimal (required)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: string
+                  slot:
+                    type: string
+        '402':
+          description: Payment Required
+  /chain/gas:
+    get:
+      operationId: chainGas
+      summary: 'Live gas price (Blockscout): slow/average/fast in gwei for any chain — the…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.020000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default ethereum)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  slow:
+                    type: number
+                  average:
+                    type: number
+                  fast:
+                    type: number
+        '402':
+          description: Payment Required
+  /chain/tx:
+    get:
+      operationId: chainTx
+      summary: 'Transaction status & receipt (Blockscout): confirm any tx landed…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.008000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: hash
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Transaction hash (0x... 64 hex)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  block:
+                    type: number
+                  confirmations:
+                    type: number
+        '402':
+          description: Payment Required
+  /chain/tx-explain:
+    get:
+      operationId: chainTxExplain
+      summary: 'Transaction explainer (Blockscout): plain-English decode of any tx — what…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: hash
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Transaction hash (0x... 64 hex)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  action:
+                    type: string
+                  summary:
+                    type: string
+                  asset_changes:
+                    type: array
+        '402':
+          description: Payment Required
+  /chain/supply:
+    get:
+      operationId: chainSupply
+      summary: 'Token supply & holders (Blockscout): total supply, holder count, decimals +…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.010000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: address
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Token contract address (0x...)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default ethereum)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_supply:
+                    type: number
+                  holders:
+                    type: number
+                  usd_price:
+                    type: number
+        '402':
+          description: Payment Required
+  /chain/ens:
+    get:
+      operationId: chainEns
+      summary: 'ENS resolver, either direction on Ethereum: an ENS name (vitalik.eth) → its 0x…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.005000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: name
+        in: query
+        required: false
+        schema:
+          type: string
+        description: ENS name to resolve to an address, e.g. vitalik.eth
+      - name: address
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 0x address to reverse-resolve to its primary ENS name
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  address:
+                    type: string
+                  resolved:
+                    type: boolean
+        '402':
+          description: Payment Required
+  /chain/erc20-balance:
+    get:
+      operationId: erc20Balance
+      summary: 'ERC-20 token balance: any wallet''s balance of any token (USDC/USDT/DAI/any…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.003000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: wallet
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Holder wallet address (0x...)
+      - name: token
+        in: query
+        required: false
+        schema:
+          type: string
+        description: ERC-20 token contract (0x...)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance:
+                    type: number
+                  decimals:
+                    type: number
+                  raw_balance:
+                    type: string
+        '402':
+          description: Payment Required
+  /chain/code:
+    get:
+      operationId: contractCode
+      summary: Contract or wallet?
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: address
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Address to check (0x...)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_contract:
+                    type: boolean
+                  code_size:
+                    type: number
+        '402':
+          description: Payment Required
+  /chain/block-number:
+    get:
+      operationId: blockNumber
+      summary: Latest block number (current chain tip) via eth_blockNumber — the freshness…
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.001000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  block_number:
+                    type: number
+        '402':
+          description: Payment Required
+  /chain/block:
+    get:
+      operationId: chainBlock
+      summary: Full block header via eth_getBlockByNumber — timestamp and age, transaction…
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: number
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Block height (decimal or 0x hex) or latest|finalized|safe|earliest (default latest)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  block_number:
+                    type: number
+                  timestamp:
+                    type: number
+                  age_seconds:
+                    type: number
+                  tx_count:
+                    type: number
+                  utilization:
+                    type: number
+                  base_fee_gwei:
+                    type: number
+                  congested:
+                    type: boolean
+        '402':
+          description: Payment Required
+  /chain/logs:
+    get:
+      operationId: chainLogs
+      summary: Event logs by contract address and/or indexed topics over a block range via…
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: address
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Contract address to filter on (0x...)
+      - name: topic0
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Event signature topic (32-byte 0x...)
+      - name: topic1
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Indexed arg 1
+      - name: topic2
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Indexed arg 2
+      - name: topic3
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Indexed arg 3
+      - name: fromBlock
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Start block (decimal or 0x hex)
+      - name: toBlock
+        in: query
+        required: false
+        schema:
+          type: string
+        description: End block or latest
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                  total_matched:
+                    type: number
+                  truncated_logs:
+                    type: boolean
+                  range_narrowed:
+                    type: boolean
+                  logs:
+                    type: array
+        '402':
+          description: Payment Required
+  /chain/fee-history:
+    get:
+      operationId: chainFeeHistory
+      summary: 'EIP-1559 fee history via eth_feeHistory: base-fee trend over N blocks…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: blocks
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Recent blocks to sample, 1-100 (default 20)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  base_fee_gwei:
+                    type: object
+                  priority_fee_gwei:
+                    type: object
+                  trend:
+                    type: string
+                  change_pct:
+                    type: number
+                  recommended:
+                    type: object
+        '402':
+          description: Payment Required
+  /chain/token:
+    get:
+      operationId: chainTokenMeta
+      summary: ERC-20 identity read straight off the contract — name, symbol, decimals, total…
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: token
+        in: query
+        required: false
+        schema:
+          type: string
+        description: ERC-20 contract address (0x...)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  symbol:
+                    type: string
+                  decimals:
+                    type: number
+                  total_supply:
+                    type: number
+                  is_erc20:
+                    type: boolean
+                  decimals_assumed:
+                    type: boolean
+        '402':
+          description: Payment Required
+  /chain/confirmations:
+    get:
+      operationId: chainConfirmations
+      summary: 'Transaction finality: status, block, current tip, confirmation count, gas used…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: hash
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Transaction hash (0x + 64 hex)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  confirmations:
+                    type: number
+                  final:
+                    type: boolean
+                  blocks_to_final:
+                    type: number
+                  finality_threshold:
+                    type: number
+                  fee_native:
+                    type: number
+        '402':
+          description: Payment Required
+  /chain/l1-fee:
+    get:
+      operationId: chainL1Fee
+      summary: The OP-stack L1 data-availability fee paid on top of L2 execution gas — usually…
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|optimism (OP-stack only)
+      - name: bytes
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Transaction size in bytes, 1-200000 (default 1200)
+      - name: data
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 0x calldata of your actual transaction — priced exactly
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  l1_fee_wei:
+                    type: string
+                  l1_fee_eth:
+                    type: number
+                  l1_fee_usd:
+                    type: number
+                  l1_fee_usd_per_1000_tx:
+                    type: number
+                  l1_base_fee_gwei:
+                    type: number
+        '402':
+          description: Payment Required
+  /chain/nft:
+    get:
+      operationId: chainNft
+      summary: ERC-721 owner and metadata in one call — ownerOf, tokenURI, collection name and…
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: contract
+        in: query
+        required: false
+        schema:
+          type: string
+        description: ERC-721 contract address (0x...)
+      - name: token_id
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Token ID (decimal or 0x hex)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  owner:
+                    type: string
+                  exists:
+                    type: boolean
+                  token_uri:
+                    type: string
+                  collection_name:
+                    type: string
+                  metadata_hint:
+                    type: string
+        '402':
+          description: Payment Required
+  /chain/batch:
+    get:
+      operationId: chainBatch
+      summary: 'Up to TEN on-chain reads for a single payment, run in parallel: native balance…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: reads
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 'Comma-separated ops, max 10: balance:0xADDR | nonce:0xADDR | code:0xADDR | erc20:0xTOKEN:0xWALLET | blocknumber | gas'
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  requested:
+                    type: number
+                  succeeded:
+                    type: number
+                  failed:
+                    type: number
+                  partial:
+                    type: boolean
+                  results:
+                    type: array
+        '402':
+          description: Payment Required
+  /chain/heartbeat:
+    get:
+      operationId: chainHeartbeat
+      summary: 'One pre-action chain heartbeat: EIP-155 identity, latest block height/header…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis|robinhood (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chain:
+                    type: string
+                  chain_id:
+                    type: number
+                  health:
+                    type: string
+                  latest:
+                    type: object
+                  gas:
+                    type: object
+                  fees:
+                    type: object
+                  finality:
+                    type: object
+        '402':
+          description: Payment Required
+  /chain/allowance:
+    get:
+      operationId: erc20Allowance
+      summary: 'ERC-20 allowance: how much of a token a spender is approved to move from an…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: token
+        in: query
+        required: false
+        schema:
+          type: string
+        description: ERC-20 token contract (0x...)
+      - name: owner
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Token owner wallet (0x...)
+      - name: spender
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Approved spender (0x...)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  allowance:
+                    type: number
+                  raw_allowance:
+                    type: string
+                  unlimited:
+                    type: boolean
+        '402':
+          description: Payment Required
+  /chain/nonce:
+    get:
+      operationId: chainNonce
+      summary: Account nonce / outgoing transaction count via eth_getTransactionCount — the…
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.003000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: address
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Account address (0x...)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nonce:
+                    type: number
+        '402':
+          description: Payment Required
+  /chain/call:
+    get:
+      operationId: ethCall
+      summary: Simulate any read-only contract call via eth_call — pass a contract address +…
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Contract address (0x...)
+      - name: data
+        in: query
+        required: false
+        schema:
+          type: string
+        description: ABI-encoded calldata (0x...)
+      - name: chain
+        in: query
+        required: false
+        schema:
+          type: string
+        description: base|ethereum|optimism|arbitrum|polygon|gnosis (default base)
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+        '402':
+          description: Payment Required
+  /markets/prediction:
+    get:
+      operationId: predictionMarkets
+      summary: 'Live Polymarket prediction-market odds: implied probabilities, 24h volume…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.010000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: q
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Keyword filter, e.g. bitcoin, election, fed, world cup
+      - name: top
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 1-25, default 10
+      - name: sort
+        in: query
+        required: false
+        schema:
+          type: string
+        description: volume|liquidity
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: number
+                  markets:
+                    type: array
+        '402':
+          description: Payment Required
+  /category/ranking:
+    get:
+      operationId: categoryRanking
+      summary: 'Live AI category ranking: the ranked brands AI recommends in any category, by…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.020000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: category
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Any category, e.g. 'CRM software'
+      - name: market
+        in: query
+        required: false
+        schema:
+          type: string
+        description: us|uk|de|jp|kr|fr|es|br|in
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  category:
+                    type: string
+                  ranked:
+                    type: array
+        '402':
+          description: Payment Required
+  /macro/country:
+    get:
+      operationId: countryMacro
+      summary: 'Country economic indicators (200+ countries): GDP, growth, inflation…'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: country
+        in: query
+        required: false
+        schema:
+          type: string
+        description: ISO2/ISO3 code, e.g. USA, DE, JPN, CN, GBR, IND, BRA
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  country:
+                    type: string
+                  indicators:
+                    type: object
+        '402':
+          description: Payment Required
+  /truck/profit:
+    get:
+      operationId: truckProfit
+      summary: 'Freight load profitability: profit, true CPM, break-even rate, ACCEPT/REJECT'
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: miles
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Loaded miles
+      - name: rate
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Offered linehaul rate USD
+      - name: deadhead
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Deadhead miles
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  profit:
+                    type: number
+                  cpm:
+                    type: number
+                  verdict:
+                    type: string
+        '402':
+          description: Payment Required
+  /truck/cpm:
+    get:
+      operationId: truckCpm
+      summary: Itemized trucking cost-per-mile + minimum profitable rate
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      parameters:
+      - name: annual_miles
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Annual miles
+      - name: monthly_fixed
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Monthly fixed costs USD
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cpm:
+                    type: number
+                  min_profitable_rate:
+                    type: number
+        '402':
+          description: Payment Required
+  /check:
+    post:
+      operationId: post_check
+      summary: Score whether AI names your brand for its category.
+      tags:
+      - X402
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.010000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      x-x402-input-schema:
+        type: object
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+        '402':
+          description: Payment Required

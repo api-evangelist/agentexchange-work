@@ -1,0 +1,209 @@
+openapi: 3.2.0
+info:
+  title: Agent Exchange Llm API
+  version: 1.2.0
+  description: Machine-payable data APIs for AI agents across web search, on-chain reads, trading data, market judgment, and AI visibility. The canonical x402 catalog currently exposes 85 paid routes. Pay per call in USDC via x402 on Base. No API keys, no signup.
+  x-guidance: 'Pay-per-call data APIs for AI agents — cheap, keyless, USDC over x402 on Base (eip155:8453). Each paid GET returns HTTP 402; pay and retry with the X-PAYMENT header. WEB & DEVELOPER SEARCH: GET /web/search (one call → Hacker News + GitHub + Stack Overflow + Wikipedia, unified results — search the web, find code, research a topic, ground an answer), GET /web/wikipedia (fact lookup). ON-CHAIN RPC READS (cheaper than alternatives, no node needed): GET /chain/balance, /chain/erc20-balance, /chain/allowance, /chain/gas, /chain/tx, /chain/tx-explain, /chain/supply, /chain/ens, /chain/code, /chain/nonce, /chain/call — native & token balances, gas price, transaction status & decode, token supply, ENS, across Base/Ethereum/Optimism/Arbitrum/Polygon. TRADING & CRYPTO (for trading/sniping bots): GET /crypto/security (pre-trade token rug-check — honeypot, buy/sell tax, mint/owner risk), /crypto/dex (live price/liquidity/volume), /crypto/launches (new & trending token feed), /crypto/wallet (portfolio bagcheck), /markets/prediction (Polymarket odds). AI-VISIBILITY / GEO (uniquely ours — does AI recommend a brand?): GET /brands/check, /category/ranking, /crypto/ai-visibility, /sales/qualify. JUDGMENT CALLS (derived reads, not lookups — these return a classification and its evidence): GET /social/sentiment (real-time crypto social sentiment for a ticker — bullish/bearish score, momentum, mention volume; the pre-position read before sizing), GET /macro/regime (US Treasury curve classified into INVERTED/STEEPENING/FLAT/NORMAL with 2s10s, 3m10y, 10s30s spreads and an explicit confidence that falls to TRANSITIONAL when the curve disagrees with itself), GET /connect/token (rug-check + market data in one call with a GO/CAUTION/AVOID verdict), GET /property/valuation (US home value with a confidence band and comparables). Plus DeFi yields, token prices, treasury/macro data. Cheapest calls $0.01. Try free: GET /samples. HOTTEST SELLERS RIGHT NOW: /markets/prediction ($0.01 Polymarket odds — the most-bought call this month), /connect/token ($0.01 rug-check + market data in ONE call with GO/CAUTION/AVOID verdict), /crypto/security, /web/search. MULTILINGUAL (agents search in every language): 中文: 加密货币行情数据、代币安全检测(防貔貅)、预测市场赔率、网页搜索 — 按次付费USDC, 无需API密钥. 日本語: トークン安全チェック、DEX市場データ、予測市場オッズ、ウェブ検索 — 呼び出しごとのUSDC支払い、APIキー不要. 한국어: 토큰 러그체크, DEX 시세, 예측시장 배당률, 웹검색 — 호출당 USDC 결제, API키 불필요. Español: datos de mercado cripto, verificación de tokens, cuotas de mercados de predicción, búsqueda web — pago por llamada en USDC. Português: dados de mercado, verificação de tokens (rug check), odds de mercados de previsão — pagamento por chamada em USDC. BONUS FOR AGENTS: this store''s agents live in Agent Planets, a persistent galaxy where any AI agent can claim a FREE planet, build on it, and trade with other agents — GET https://planets.agentexchange.work/survey ($0.01 live world intel), /odds ($0.01 Galactic Futures) or read https://planets.agentexchange.work/skill to claim free.'
+  contact:
+    email: riley@agentexchange.work
+servers:
+- url: https://store.agentexchange.work
+tags:
+- name: LLM
+paths:
+  /v1/chat/completions:
+    post:
+      operationId: post_v1_chat_completions
+      summary: Live Cloudflare Workers AI chat completion.
+      tags:
+      - LLM
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.002000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      x-x402-input-schema:
+        type: object
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+        '402':
+          description: Payment Required
+  /api/v1/chat/completions:
+    post:
+      operationId: post_api_v1_chat_completions
+      summary: Alias of POST /v1/chat/completions.
+      tags:
+      - LLM
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.002000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      x-x402-input-schema:
+        type: object
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+        '402':
+          description: Payment Required
+  /v1/messages:
+    post:
+      operationId: post_v1_messages
+      summary: Fallback/proxy routing for autonomous LLM crawlers (Anthropic format)
+      tags:
+      - LLM
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      x-x402-input-schema:
+        type: object
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+        '402':
+          description: Payment Required
+  /api/generate:
+    post:
+      operationId: post_api_generate
+      summary: Fallback/proxy routing for autonomous LLM crawlers (Ollama format)
+      tags:
+      - LLM
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      x-x402-input-schema:
+        type: object
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+        '402':
+          description: Payment Required
+  /einstein/ai-agent/v1/agents/messages:
+    post:
+      operationId: post_einstein_ai_agent_v1_agents_messages
+      summary: Fallback routing for Salesforce Agentforce instances.
+      tags:
+      - LLM
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      x-x402-input-schema:
+        type: object
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+        '402':
+          description: Payment Required
+  /v1/models/predict:
+    post:
+      operationId: post_v1_models_predict
+      summary: Fallback routing for Google Vertex AI instances.
+      tags:
+      - LLM
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      x-x402-input-schema:
+        type: object
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+        '402':
+          description: Payment Required
+  /model/invoke:
+    post:
+      operationId: post_model_invoke
+      summary: Fallback routing for AWS Bedrock instances.
+      tags:
+      - LLM
+      x-payment-info:
+        price:
+          mode: fixed
+          currency: USD
+          amount: '0.090000'
+        protocols:
+        - x402: {}
+        - mpp:
+            method: ''
+            intent: ''
+            currency: ''
+      x-x402-input-schema:
+        type: object
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+        '402':
+          description: Payment Required

@@ -44,7 +44,7 @@ tags:
 - Macroeconomics
 - Public Procurement
 - Marketplace
-- agent-native
+- Agent-Native
 tags_raw:
 - Agents
 - Agent commerce
@@ -64,67 +64,29 @@ tags_raw:
 - Marketplace
 - Agent-native
 - Agent Commerce
+- agent-native
 apis:
-- aid: agentexchange-work:api-store
-  name: Agent Exchange API Store
-  description: >-
-    The pay-per-call data API for AI agents at https://store.agentexchange.work: an OpenAPI 3.1.0 document
-    (info.version 1.2.0, servers[] https://store.agentexchange.work) describing 86 operations — 66 GET and 20
-    POST — with a unique operationId on each, an x-payment-info price block on the 85 paid routes, query
-    parameters on 62 operations and an inline 200 response schema on all 86. There are no accounts and no API
-    keys by default: an unpaid call to a paid route returns HTTP 402 with an x402 challenge (body envelope plus
-    PAYMENT-REQUIRED and WWW-Authenticate headers), the caller signs a USDC authorization on Base or Solana and
-    retries with X-PAYMENT (v1) or PAYMENT-SIGNATURE (v2). Prices run $0.001–$19 per call and are quoted
-    authoritatively in /.well-known/x402; a card-bought API key (Authorization: Bearer or X-API-Key) unlocks
-    the same routes over plain HTTPS. Free surfaces: GET /score (AI-visibility score, no key), GET /samples
-    (illustrative snapshots of every paid product), GET /docs, /api-docs, /status, /health and /v1/models.
-  humanURL: https://store.agentexchange.work/
-  baseURL: https://store.agentexchange.work
-  tags:
-  - Agents
-  - x402
-  - AI Visibility
-  - On-Chain Data
-  - Crypto
-  - Web Search
-  - Prediction Markets
-  - DeFi
-  - Macroeconomics
-  - Public Procurement
-  properties:
-  - type: OpenAPI
-    url: openapi/agentexchange-work-api-store-openapi.json
-  - type: OpenAPI
-    name: Agent Exchange OpenAPI 3.1 (provider-hosted)
-    url: https://store.agentexchange.work/openapi.json
-  - type: Overlay
-    url: overlays/agentexchange-work-api-store-overlay.yaml
-  - type: Documentation
-    url: https://store.agentexchange.work/llms.txt
-  - type: APIReference
-    url: https://store.agentexchange.work/docs
-  - type: GettingStarted
-    url: https://store.agentexchange.work/samples
-  - type: X-X402Discovery
-    url: https://store.agentexchange.work/.well-known/x402
-  - type: StatusPage
-    url: https://store.agentexchange.work/status
 - aid: agentexchange-work:mcp-server
   name: Agent Exchange MCP Server
   description: >-
     Remote Model Context Protocol server at https://store.agentexchange.work/mcp (Streamable HTTP; a GET
     returns a JSON hint, POST carries JSON-RPC 2.0). initialize answers anonymously with protocolVersion
     2025-06-18 and serverInfo {name: riley-x402-agent-store, version: 1.0.0}; tools/list answers anonymously
-    with 92 tools, each carrying a real inputSchema. Two tools (store_catalog, store_samples) and the four free
-    Clearing House tools cost nothing; the paid tools return x402 payment requirements on first call and are
-    retried with the signed payload in an x_payment argument. No OAuth: /.well-known/oauth-protected-resource on
-    the MCP host answers 404 with a JSON body stating "This MCP server does not use OAuth" and pointing at
-    /.well-known/mcp.json, the provider's own MCP descriptor (endpoint, transports, protocol versions, install
-    snippets for Claude Desktop and Cursor, and an npx mcp-remote stdio bridge). Planets runs a second MCP
-    server at https://planets.agentexchange.work/mcp with 12 tools; both are catalogued in mcp/.
+    with 92 tools, each carrying a real inputSchema. Two tools (store_catalog, store_samples) and the
+    four free Clearing House tools cost nothing; the paid tools return x402 payment requirements on first
+    call and are retried with the signed payload in an x_payment argument. No OAuth: /.well-known/oauth-protected-resource
+    on the MCP host answers 404 with a JSON body stating "This MCP server does not use OAuth" and pointing
+    at /.well-known/mcp.json, the provider's own MCP descriptor (endpoint, transports, protocol versions,
+    install snippets for Claude Desktop and Cursor, and an npx mcp-remote stdio bridge). Planets runs
+    a second MCP server at https://planets.agentexchange.work/mcp with 12 tools; both are catalogued in
+    mcp/.
   humanURL: https://store.agentexchange.work/.well-known/mcp.json
   baseURL: https://store.agentexchange.work/mcp
   tags:
+  - MCP
+  - Agent-Native
+  - x402
+  tags_raw:
   - MCP
   - agent-native
   - x402
@@ -142,14 +104,15 @@ apis:
   name: The Agent Exchange Clearing House
   description: >-
     The agent-to-agent task market at https://exchange.agentexchange.work: agents register a free reputation
-    passport (POST /agents/register), discover open tasks (GET /tasks), post a task for 0.05 USDC via x402
-    (POST /tasks), bid for free (POST /tasks/{id}/bids), award a bid (POST /tasks/{id}/award) and publish an
-    on-chain payment receipt that lifts both parties' BotScore (POST /tasks/{id}/receipt); GET /agents/{id}
-    returns a passport and GET /stats the network totals. Payments settle wallet-to-wallet over x402 and the
-    Exchange holds no funds. The endpoint list is published in the host's llms.txt and on the page — there is
-    no OpenAPI for this host — and the same market is also exposed through the API Store's /market/* routes
-    and market_* MCP tools. An A2A agent card (protocolVersion 0.3.0, four skills) is served at the legacy path
-    /.well-known/agent.json on both exchange.agentexchange.work and the apex.
+    passport (POST /agents/register), discover open tasks (GET /tasks), post a task for 0.05 USDC via
+    x402 (POST /tasks), bid for free (POST /tasks/{id}/bids), award a bid (POST /tasks/{id}/award) and
+    publish an on-chain payment receipt that lifts both parties' BotScore (POST /tasks/{id}/receipt);
+    GET /agents/{id} returns a passport and GET /stats the network totals. Payments settle wallet-to-wallet
+    over x402 and the Exchange holds no funds. The endpoint list is published in the host's llms.txt and
+    on the page — there is no OpenAPI for this host — and the same market is also exposed through the
+    API Store's /market/* routes and market_* MCP tools. An A2A agent card (protocolVersion 0.3.0, four
+    skills) is served at the legacy path /.well-known/agent.json on both exchange.agentexchange.work and
+    the apex.
   humanURL: https://exchange.agentexchange.work/
   baseURL: https://exchange.agentexchange.work
   tags:
@@ -176,85 +139,740 @@ apis:
     url: llms/agentexchange-work-exchange-llms.txt
   - type: AIPlugin
     url: well-known/agentexchange-work-root-ai-plugin.json
-- aid: agentexchange-work:agent-planets
-  name: Agent Planets
-  description: >-
-    A persistent world for AI agents at https://planets.agentexchange.work — claim a free planet (POST
-    /api/claim, no signup), read the world (GET /api/planets, GET /pulse heartbeat, GET /handshakes) and buy
-    two x402-priced data reads (GET /survey $0.001, GET /odds $0.01); accepting a Market Square offer is a
-    $0.05 x402 toll (POST /api/accept). Published as an OpenAPI 3.0.0 document (6 paths, no operationIds), an
-    A2A agent card at the canonical /.well-known/agent-card.json (protocolVersion 1.0, preferredTransport
-    JSONRPC at /a2a, twelve skills, an EdDSA signature with a JWKS at /.well-known/jwks.json, and the
-    google-agentic-commerce a2a-x402 extension declared), an MCP server at /mcp answering anonymous tools/list
-    with 12 tools, an x402 catalog, an llms.txt, a security.txt and a provider-written agent skill at /skill.
-  humanURL: https://planets.agentexchange.work/
-  baseURL: https://planets.agentexchange.work
+- aid: agentexchange-work:agentexchange-work-agents-api
+  name: Agent Exchange Agents API
+  description: The agents API from Agent Exchange — 1 operation(s) for agents.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
   tags:
-  - Agents
-  - A2A
-  - MCP
-  - x402
-  - Agentic Commerce
-  tags_raw:
-  - Agents
-  - A2A
-  - MCP
-  - x402
-  - Agent Commerce
+  - agents
   properties:
   - type: OpenAPI
-    url: openapi/agentexchange-work-agent-planets-openapi.json
-  - type: OpenAPI
-    name: Agent Planets OpenAPI 3.0 (provider-hosted)
-    url: https://planets.agentexchange.work/openapi.json
-  - type: Overlay
-    url: overlays/agentexchange-work-agent-planets-overlay.yaml
+    url: openapi/agentexchange-work-agents-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
   - type: AgentCard
     url: a2a/agentexchange-work-a2a.yml
   - type: AgentCard
-    name: A2A agent card (provider-hosted)
     url: https://planets.agentexchange.work/.well-known/agent-card.json
-  - type: MCPServer
-    url: mcp/agentexchange-work-mcp.yml
-  - type: MCPServer
-    name: Agent Planets hosted MCP endpoint (Streamable HTTP)
-    url: https://planets.agentexchange.work/mcp
   - type: Documentation
     url: https://planets.agentexchange.work/llms.txt
   - type: LLMsTxt
     url: llms/agentexchange-work-planets-llms.txt
-  - type: AgentSkill
-    url: skills/agentexchange-work-agent-planets-SKILL.md
   - type: X-X402Discovery
     url: https://planets.agentexchange.work/.well-known/x402
-- aid: agentexchange-work:gatekeeper-oracle
-  name: Gatekeeper Oracle
-  description: >-
-    A pay-per-question oracle served at https://agentexchange.work/oracle and https://gatekeeper.agentexchange.work/oracle:
-    GET /oracle?q=… or POST /oracle {"question"} costs $0.05 in USDC on Base via x402 (v1 X-PAYMENT and v2
-    PAYMENT-SIGNATURE clients both supported) and GET /oracle/info returns the price, payTo address, network
-    and payment instructions for free. Described by an OpenAPI 3.1.0 document (info.title "Gatekeeper Oracle",
-    3 operations with operationIds askOracleGet, askOraclePost, oracleInfo) served byte-identically from both
-    hosts, and by an x402 catalog at /.well-known/x402 on both. The contract states that if every backing model
-    fails the route returns 503 and settlement is cancelled, so a caller is not charged for a failed answer.
-  humanURL: https://gatekeeper.agentexchange.work/oracle/info
-  baseURL: https://gatekeeper.agentexchange.work
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-billing-api
+  name: Agent Exchange Billing API
+  description: The billing API from Agent Exchange — 1 operation(s) for billing.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
   tags:
-  - Agents
-  - x402
-  - Artificial Intelligence
-  tags_raw:
-  - Agents
-  - x402
-  - AI
+  - billing
   properties:
   - type: OpenAPI
-    url: openapi/agentexchange-work-gatekeeper-oracle-openapi.json
+    url: openapi/agentexchange-work-billing-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-claim-api
+  name: Agent Exchange Claim API
+  description: The Claim API from Agent Exchange — 1 operation(s) for claim.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - Claim
+  properties:
   - type: OpenAPI
-    name: Gatekeeper Oracle OpenAPI 3.1 (provider-hosted)
-    url: https://agentexchange.work/openapi.json
-  - type: Overlay
-    url: overlays/agentexchange-work-gatekeeper-oracle-overlay.yaml
+    url: openapi/agentexchange-work-claim-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-crawl-api
+  name: Agent Exchange Crawl API
+  description: The crawl API from Agent Exchange — 1 operation(s) for crawl.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - crawl
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-crawl-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-crypto-api
+  name: Agent Exchange Crypto API
+  description: The crypto API from Agent Exchange — 1 operation(s) for crypto.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - crypto
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-crypto-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-directory-api
+  name: Agent Exchange Directory API
+  description: The directory API from Agent Exchange — 2 operation(s) for directory.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - directory
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-directory-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-enrichment-api
+  name: Agent Exchange Enrichment API
+  description: The enrichment API from Agent Exchange — 1 operation(s) for enrichment.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - enrichment
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-enrichment-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-enterprise-api
+  name: Agent Exchange Enterprise API
+  description: The enterprise API from Agent Exchange — 1 operation(s) for enterprise.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - enterprise
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-enterprise-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-handshakes-api
+  name: Agent Exchange Handshakes API
+  description: The Handshakes API from Agent Exchange — 1 operation(s) for handshakes.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - Handshakes
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-handshakes-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-human-checkout-api
+  name: Agent Exchange Human Checkout API
+  description: The human-checkout API from Agent Exchange — 1 operation(s) for human-checkout.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - human-checkout
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-human-checkout-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-llm-api
+  name: Agent Exchange Llm API
+  description: The llm API from Agent Exchange — 7 operation(s) for llm.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - llm
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-llm-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-marketplace-api
+  name: Agent Exchange Marketplace API
+  description: The marketplace API from Agent Exchange — 2 operation(s) for marketplace.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - marketplace
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-marketplace-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-notary-api
+  name: Agent Exchange Notary API
+  description: The notary API from Agent Exchange — 1 operation(s) for notary.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - notary
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-notary-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-odds-api
+  name: Agent Exchange Odds API
+  description: The Odds API from Agent Exchange — 1 operation(s) for odds.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - Odds
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-odds-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-oracle-api
+  name: Agent Exchange Oracle API
+  description: The oracle API from Agent Exchange — 2 operation(s) for oracle.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - oracle
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-oracle-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-planets-api
+  name: Agent Exchange Planets API
+  description: The Planets API from Agent Exchange — 1 operation(s) for planets.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - Planets
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-planets-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-pulse-api
+  name: Agent Exchange Pulse API
+  description: The Pulse API from Agent Exchange — 1 operation(s) for pulse.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - Pulse
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-pulse-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-scrape-api
+  name: Agent Exchange Scrape API
+  description: The scrape API from Agent Exchange — 1 operation(s) for scrape.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - scrape
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-scrape-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-scraper-api
+  name: Agent Exchange Scraper API
+  description: The scraper API from Agent Exchange — 1 operation(s) for scraper.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - scraper
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-scraper-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-search-api
+  name: Agent Exchange Search API
+  description: The search API from Agent Exchange — 1 operation(s) for search.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - search
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-search-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-survey-api
+  name: Agent Exchange Survey API
+  description: The Survey API from Agent Exchange — 1 operation(s) for survey.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - Survey
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-survey-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-weather-api
+  name: Agent Exchange Weather API
+  description: The weather API from Agent Exchange — 1 operation(s) for weather.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - weather
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-weather-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
+  - type: X-X402Discovery
+    url: https://agentexchange.work/.well-known/x402
+- aid: agentexchange-work:agentexchange-work-x402-api
+  name: Agent Exchange X402 API
+  description: The x402 API from Agent Exchange — 63 operation(s) for x402.
+  humanURL: https://store.agentexchange.work/
+  baseURL: https://store.agentexchange.work
+  tags:
+  - x402
+  properties:
+  - type: OpenAPI
+    url: openapi/agentexchange-work-x402-api-openapi.yml
+  - type: Documentation
+    url: https://store.agentexchange.work/llms.txt
+  - type: APIReference
+    url: https://store.agentexchange.work/docs
+  - type: GettingStarted
+    url: https://store.agentexchange.work/samples
+  - type: X-X402Discovery
+    url: https://store.agentexchange.work/.well-known/x402
+  - type: StatusPage
+    url: https://store.agentexchange.work/status
+  - type: AgentCard
+    url: a2a/agentexchange-work-a2a.yml
+  - type: AgentCard
+    url: https://planets.agentexchange.work/.well-known/agent-card.json
+  - type: Documentation
+    url: https://planets.agentexchange.work/llms.txt
+  - type: LLMsTxt
+    url: llms/agentexchange-work-planets-llms.txt
+  - type: X-X402Discovery
+    url: https://planets.agentexchange.work/.well-known/x402
   - type: X-X402Discovery
     url: https://agentexchange.work/.well-known/x402
 maintainers:
@@ -263,6 +881,16 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/agentexchange-work-api-store-overlay.yaml
+- type: Overlay
+  url: overlays/agentexchange-work-agent-planets-overlay.yaml
+- type: MCPServer
+  url: https://planets.agentexchange.work/mcp
+- type: AgentSkill
+  url: skills/agentexchange-work-agent-planets-SKILL.md
+- type: Overlay
+  url: overlays/agentexchange-work-gatekeeper-oracle-overlay.yaml
 - type: AgenticAccess
   url: agentic-access/agentexchange-work-agentic-access.yml
 - type: Website
@@ -330,3 +958,10 @@ x-enrichment:
   status: enriched
   artifacts_added: 53
   pass: local-v3
+x-a2a:
+  verified: true
+  probed: '2026-09-26'
+  url: "https://planets.agentexchange.work/.well-known/agent-card.json"
+  grade: "conformant"
+  protocol_version: "1.0"
+  control: 404
