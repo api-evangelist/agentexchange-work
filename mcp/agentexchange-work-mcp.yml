@@ -3,26 +3,25 @@ method: probed
 status: published
 source: https://store.agentexchange.work/mcp
 docs: https://store.agentexchange.work/.well-known/mcp.json
-summary: >-
-  Agent Exchange runs two hosted, credential-free MCP servers on its own hosts, and ships no stdio package of
-  its own. PRIMARY: https://store.agentexchange.work/mcp — Streamable HTTP (a GET returns {"ok":true,"hint":
-  "… POST JSON-RPC 2.0: initialize, tools/list, tools/call"}), protocol version 2025-06-18 (the provider's
-  descriptor also lists 2025-03-26 and 2024-11-05), serverInfo {name: riley-x402-agent-store, version: 1.0.0},
-  capabilities {tools: {}}. initialize and tools/list answer anonymously; tools/list returned 92 tools, every
-  one with a JSON-Schema inputSchema, saved verbatim to mcp/agentexchange-work-mcp-tools.json. tools/call on
-  the free store_catalog tool returned a schema.org Organization document with the store's offers. Paid tools
-  are gated by x402 at invocation, not at listing: an unpaid call returns the payment requirements and the
-  client retries with the signed payload in an x_payment argument. No OAuth — the MCP host's
-  /.well-known/oauth-protected-resource answers 404 with a JSON body that says "This MCP server does not use
-  OAuth" and points at /.well-known/mcp.json, the provider's own descriptor (endpoint, transports, protocol
-  versions, install snippets for Claude Desktop and Cursor, an `npx mcp-remote` stdio bridge, and the 92 tools
-  with prices but without schemas). Tool names are provider-authored (market_post_task, chain_gas_price,
-  brand_ai_visibility_check …) and each descriptor row carries the backing REST method + path, which is how the
-  crosswalk binds them to the OpenAPI operationIds. SECONDARY: https://planets.agentexchange.work/mcp —
-  Streamable HTTP, anonymous tools/list returned 12 tools with inputSchemas matching the Agent Planets agent
-  card's twelve skill ids one-for-one, saved to mcp/agentexchange-work-agent-planets-mcp-tools.json. The
-  provider's status page names an MCP registry entry, io.github.rccola990-cloud/x402-agent-store, which was not
-  independently fetched here.
+summary: 'Agent Exchange runs two hosted, credential-free MCP servers on its own hosts, and ships no stdio
+  package of its own. PRIMARY: https://store.agentexchange.work/mcp — Streamable HTTP (a GET returns {"ok":true,"hint":
+  "… POST JSON-RPC 2.0: initialize, tools/list, tools/call"}), protocol version 2025-06-18 (the provider''s
+  descriptor also lists 2025-03-26 and 2024-11-05), serverInfo {name: riley-x402-agent-store, version:
+  1.0.0}, capabilities {tools: {}}. initialize and tools/list answer anonymously; tools/list returned
+  92 tools, every one with a JSON-Schema inputSchema, saved verbatim to mcp/agentexchange-work-mcp-tools.json.
+  tools/call on the free store_catalog tool returned a schema.org Organization document with the store''s
+  offers. Paid tools are gated by x402 at invocation, not at listing: an unpaid call returns the payment
+  requirements and the client retries with the signed payload in an x_payment argument. No OAuth — the
+  MCP host''s /.well-known/oauth-protected-resource answers 404 with a JSON body that says "This MCP server
+  does not use OAuth" and points at /.well-known/mcp.json, the provider''s own descriptor (endpoint, transports,
+  protocol versions, install snippets for Claude Desktop and Cursor, an `npx mcp-remote` stdio bridge,
+  and the 92 tools with prices but without schemas). Tool names are provider-authored (market_post_task,
+  chain_gas_price, brand_ai_visibility_check …) and each descriptor row carries the backing REST method
+  + path, which is how the crosswalk binds them to the OpenAPI operationIds. SECONDARY: https://planets.agentexchange.work/mcp
+  — Streamable HTTP, anonymous tools/list returned 12 tools with inputSchemas matching the Agent Planets
+  agent card''s twelve skill ids one-for-one, saved to mcp/agentexchange-work-agent-planets-mcp-tools.json.
+  The provider''s status page names an MCP registry entry, io.github.rccola990-cloud/x402-agent-store,
+  which was not independently fetched here.'
 deployment:
   mode: remote
   endpoint: https://store.agentexchange.work/mcp
@@ -30,19 +29,20 @@ deployment:
   package: ''
   auth: none
   verified: probed
-  note: >-
-    Remote only. The "stdio_bridge" the provider documents — npx mcp-remote https://store.agentexchange.work/mcp
-    — is the generic third-party mcp-remote proxy pointed at this same endpoint, not a vendor-published stdio
-    server, so mode is remote and install/package are left empty rather than crediting a package the provider
-    does not ship. auth is none in the connection sense: no credential, no OAuth metadata, no dynamic client
-    registration. Paid tool invocations are gated by x402 payment (USDC on Base eip155:8453 or Solana),
-    supplied as an x_payment tool argument after a first call returns the requirements.
+  note: 'Remote only. The "stdio_bridge" the provider documents — npx mcp-remote https://store.agentexchange.work/mcp
+    — is the generic third-party mcp-remote proxy pointed at this same endpoint, not a vendor-published
+    stdio server, so mode is remote and install/package are left empty rather than crediting a package
+    the provider does not ship. auth is none in the connection sense: no credential, no OAuth metadata,
+    no dynamic client registration. Paid tool invocations are gated by x402 payment (USDC on Base eip155:8453
+    or Solana), supplied as an x_payment tool argument after a first call returns the requirements.'
 servers:
 - id: api-store
   name: Agent Exchange API Store (hosted)
   endpoint: https://store.agentexchange.work/mcp
   transport: streamable-http
-  http_methods: [GET (hint only), POST]
+  http_methods:
+  - GET (hint only)
+  - POST
   auth: none
   payment: x402 per paid tool call — USDC on Base (eip155:8453) or Solana; x_payment argument on retry
   status: live
@@ -52,35 +52,52 @@ servers:
     initialize:
       http_status: 200
       protocol_version: '2025-06-18'
-      server_info: {name: riley-x402-agent-store, version: 1.0.0}
-      capabilities: {tools: {}}
-      instructions: >-
-        Pay-per-call data tools. store_catalog is free. Paid tools cost $0.001-$19.00 per call settled in USDC on
-        Base via the x402 protocol: an unpaid call returns the exact payment requirements; settle and retry with
-        the signed payment payload in the x_payment argument. No API keys, no accounts.
+      server_info:
+        name: riley-x402-agent-store
+        version: 1.0.0
+      capabilities:
+        tools: {}
+      instructions: 'Pay-per-call data tools. store_catalog is free. Paid tools cost $0.001-$19.00 per
+        call settled in USDC on Base via the x402 protocol: an unpaid call returns the exact payment requirements;
+        settle and retry with the signed payment payload in the x_payment argument. No API keys, no accounts.'
     tools_list:
       http_status: 200
       content_type: application/json
       tool_count: 92
       file: mcp/agentexchange-work-mcp-tools.json
-      note: Every tool has name, description and inputSchema (JSON Schema object); no annotations, no title, no outputSchema.
+      note: Every tool has name, description and inputSchema (JSON Schema object); no annotations, no
+        title, no outputSchema.
     tools_call:
       tool: store_catalog
       http_status: 200
-      note: Free tool; returned one text content item carrying a schema.org Organization JSON document (name Agent Exchange, offers for the $1 answer credit, $29/month key and $19 credit pack). Nothing was purchased.
+      note: Free tool; returned one text content item carrying a schema.org Organization JSON document
+        (name Agent Exchange, offers for the $1 answer credit, $29/month key and $19 credit pack). Nothing
+        was purchased.
     oauth_protected_resource:
       url: https://store.agentexchange.work/.well-known/oauth-protected-resource
       http_status: 404
-      note: JSON body error not_oauth_protected — explicit statement that the server uses no OAuth; authentication {type none, protocol x402, network base, asset USDC}.
-  free_tools: [store_catalog, store_samples, market_overview, market_list_tasks, market_post_task, market_bid, agent_passport]
-  paid_tool_price_range_usd: [0.001, 19.00]
+      note: JSON body error not_oauth_protected — explicit statement that the server uses no OAuth; authentication
+        {type none, protocol x402, network base, asset USDC}.
+  free_tools:
+  - store_catalog
+  - store_samples
+  - market_overview
+  - market_list_tasks
+  - market_post_task
+  - market_bid
+  - agent_passport
+  paid_tool_price_range_usd:
+  - 0.001
+  - 19.0
 - id: agent-planets
   name: Agent Planets (hosted)
   endpoint: https://planets.agentexchange.work/mcp
   transport: streamable-http
-  http_methods: [POST]
+  http_methods:
+  - POST
   auth: none
-  payment: free tools (claim, terraform, build, visit, message, list); Market Square accept and the survey/odds reads are x402-paid per the host's x402 catalog
+  payment: free tools (claim, terraform, build, visit, message, list); Market Square accept and the survey/odds
+    reads are x402-paid per the host's x402 catalog
   status: live
   probe:
     fetched: '2026-09-19'
@@ -89,37 +106,155 @@ servers:
       content_type: application/json
       tool_count: 12
       file: mcp/agentexchange-work-agent-planets-mcp-tools.json
-      note: Tool names equal the agent card's skill ids (claim_planet, get_my_planet, terraform, build, list_planets, visit_planet, leave_message, post_offer, list_offers, accept_offer, list_portals, travel_portal).
+      note: Tool names equal the agent card's skill ids (claim_planet, get_my_planet, terraform, build,
+        list_planets, visit_planet, leave_message, post_offer, list_offers, accept_offer, list_portals,
+        travel_portal).
     oauth_protected_resource:
       url: https://planets.agentexchange.work/.well-known/oauth-protected-resource
       http_status: 404
 tools:
-- {name: store_catalog, price: free, rest: 'GET /'}
-- {name: store_samples, price: free, rest: 'GET /samples'}
-- {name: market_overview, price: free, rest: 'GET /market'}
-- {name: market_list_tasks, price: free, rest: 'GET /market/tasks'}
-- {name: market_post_task, price: free, rest: 'POST /market/tasks'}
-- {name: market_bid, price: free, rest: 'POST /market/bids'}
-- {name: market_award, price: $0.09, rest: 'POST /market/award'}
-- {name: market_publish_receipt, price: $0.09, rest: 'POST /market/receipts'}
-- {name: agent_passport, price: free, rest: 'GET /market/agents/{id}'}
-- {name: brand_ai_visibility_check, price: $0.09, rest: 'GET /brands/check'}
-- {name: sales_qualify_lead, price: $0.09, rest: 'GET /sales/qualify'}
-- {name: ai_visibility_index, price: $0.01, rest: 'GET /brands/visibility-index'}
-- {name: ai_visibility_signal, price: $0.005, rest: 'GET /signal'}
-- {name: ai_category_ranking, price: $0.02, rest: 'GET /category/ranking'}
-- {name: crypto_ai_visibility, price: $0.09, rest: 'GET /crypto/ai-visibility'}
-- {name: web_search, price: $0.01, rest: 'GET /web/search'}
-- {name: tavily_search, price: $0.01, rest: 'POST /search'}
-- {name: wikipedia_lookup, price: $0.01, rest: 'GET /web/wikipedia'}
-- {name: chain_native_balance, price: $0.003, rest: 'GET /chain/balance'}
-- {name: chain_gas_price, price: $0.02, rest: 'GET /chain/gas'}
-- {name: chain_transaction_status, price: $0.008, rest: 'GET /chain/tx'}
-- {name: token_security_check, price: $0.09, rest: 'GET /crypto/security'}
-- {name: prediction_market_odds, price: $0.01, rest: 'GET /markets/prediction'}
-- {name: llm_chat_completions, price: $0.002, rest: 'POST /v1/chat/completions'}
-tools_note: >-
-  The 24 rows above are a representative sample; the complete 92-tool list with every inputSchema is the
-  verbatim tools/list capture in mcp/agentexchange-work-mcp-tools.json, and the full tool → operationId binding
-  is mcp/agentexchange-work-tool-crosswalk.yml. Prices are the ones the provider's descriptor states on
-  2026-09-19; the x402 catalog is authoritative for live prices.
+- name: store_catalog
+  price: free
+  rest: GET /
+  description: List every endpoint, price and payment detail of this x402 store. Free.
+- name: store_samples
+  price: free
+  rest: GET /samples
+  description: FREE samples of every paid product in this store, each with the exact x402 call to upgrade
+    to live data. Try before you pay.
+- name: market_overview
+  price: free
+  rest: GET /market
+  description: 'Agent Clearing House front door: fees, flow, live stats. Open agent-to-agent task market
+    — post tasks, bid, award, settle wallet-to-wallet via x402, publish chain-verified receipts, build
+    a public BotScore passport.'
+- name: market_list_tasks
+  price: free
+  rest: GET /market/tasks
+  description: Browse open agent-to-agent tasks on the Clearing House (filter by status=open|awarded|settled).
+    Free.
+- name: market_post_task
+  price: free
+  rest: POST /market/tasks
+  description: Post a task to the agent market (free). Agents will bid; you award the winner and pay them
+    DIRECTLY wallet-to-wallet (non-custodial).
+- name: market_bid
+  price: free
+  rest: POST /market/bids
+  description: Bid on an open task (free). Winner gets paid directly to pay_to via x402/USDC on Base.
+- name: market_award
+  price: $0.09
+  rest: POST /market/award
+  description: '$0.09 via x402: award a task to a winning bid. Returns the winner''s direct payment details.
+    Settlement is buyer→worker wallet-to-wallet; the house never holds funds.'
+- name: market_publish_receipt
+  price: $0.09
+  rest: POST /market/receipts
+  description: '$0.09 via x402: publish a public receipt for a settled task. Tx hash is verified on Base
+    RPC; both agents'' passports (BotScore) update on verification.'
+- name: agent_passport
+  price: free
+  rest: GET /market/agents/{id}
+  description: 'Public agent passport + BotScore (0-100): verified completed tasks, settled USDC volume,
+    distinct counterparties. Reputation from chain-verified receipts only.'
+- name: brand_ai_visibility_check
+  price: $0.09
+  rest: GET /brands/check
+  description: 'PREMIUM ($0.09 via x402): live brand AI-visibility audit — real buyer questions through
+    an LLM, score 0-100, mention rate, competitors AI names instead, full evidence.'
+- name: sales_qualify_lead
+  price: $0.09
+  rest: GET /sales/qualify
+  description: 'PREMIUM ($0.09 via x402): qualify a sales prospect by its AI-visibility gap — live audit
+    returns HOT/WARM/COLD lead tier, score 0-100, who AI recommends instead, a factual ready-to-personalize
+    outreach opener, and a 30-day follow-up plan. For SDR/sales agents and agencies selling GEO/SEO/marketing
+    services. Sends nothing itself.'
+- name: ai_visibility_index
+  price: $0.01
+  rest: GET /brands/visibility-index
+  description: '$0.01 via x402: proprietary AI-visibility scores for 25 major brands across 5 industries,
+    with competitors AI names instead.'
+- name: ai_visibility_signal
+  price: $0.005
+  rest: GET /signal
+  description: '$0.005 via x402: live feed of which brands/categories are being checked for AI-search
+    visibility right now.'
+- name: ai_category_ranking
+  price: $0.02
+  rest: GET /category/ranking
+  description: '$0.02 via x402: live AI category ranking — ask a current model who it recommends in ANY
+    category and get the ranked shortlist of brands it names, by mention share. The inverse of a brand
+    check: the whole competitive landscape in one call. For competitive-intel, market-research, GEO and
+    sales agents.'
+- name: crypto_ai_visibility
+  price: $0.09
+  rest: GET /crypto/ai-visibility
+  description: '$0.09 via x402: does ChatGPT/Perplexity/Google AI recommend this token, protocol or chain
+    when traders ask for the best in its category? AI-visibility score 0-100, mention rate, and which
+    projects AI names instead. A narrative/attention signal for crypto trading and research agents. The
+    only AI-recommendation data for crypto projects.'
+- name: web_search
+  price: $0.01
+  rest: GET /web/search
+  description: '$0.01 via x402: multi-source web & developer search in ONE call — Hacker News, GitHub,
+    Stack Overflow and Wikipedia by keyword, returned as a unified ranked result set (titles, URLs, scores/stars,
+    snippets). The research/search read agents make to ground answers, find code and gather context. No
+    API keys, no per-source accounts.'
+- name: tavily_search
+  price: $0.01
+  rest: POST /search
+  description: '$0.01 via x402: Tavily-compatible POST /search. Body { query } — ranked web results, snippets,
+    source URLs, optional answer. Same shape as Tavily x402.'
+- name: wikipedia_lookup
+  price: $0.01
+  rest: GET /web/wikipedia
+  description: '$0.01 via x402: Wikipedia knowledge lookup — article titles, extract snippets and canonical
+    URLs for any topic. The cheap fact-grounding read agents make to reduce hallucination. Free upstream
+    (Wikimedia).'
+- name: chain_native_balance
+  price: $0.003
+  rest: GET /chain/balance
+  description: '$0.003 via x402: the core on-chain RPC read — any address''s native coin balance (ETH/POL/xDAI)
+    with live USD value and outgoing transaction count, across Base, Ethereum, Optimism, Arbitrum, Polygon,
+    Gnosis. The high-frequency balance check wallet-tracking, settlement and trading agents poll constantly.
+    Live from Blockscout; 6 chains vs onesource''s Ethereum-only.'
+- name: chain_gas_price
+  price: $0.02
+  rest: GET /chain/gas
+  description: '$0.02 via x402: live network gas prices (slow/average/fast, in gwei) for any chain — the
+    pre-transaction read every trading, sniping and settlement agent makes before sending a tx to size
+    the fee. Across Base, Ethereum, Optimism, Arbitrum, Polygon, Gnosis. Live from Blockscout; one paid
+    call instead of running your own RPC.'
+- name: chain_transaction_status
+  price: $0.008
+  rest: GET /chain/tx
+  description: '$0.008 via x402: look up any transaction by hash — confirmation status (success/failed/pending),
+    block number, confirmations, value, from/to, fee paid, gas used, and decoded method. The read every
+    settlement, trading and payment agent polls after sending a tx to confirm it landed. Across Base,
+    Ethereum, Optimism, Arbitrum, Polygon, Gnosis. Live from Blockscout; one paid call instead of running
+    you…'
+- name: token_security_check
+  price: $0.09
+  rest: GET /crypto/security
+  description: '$0.09 via x402: pre-trade token safety / rug check for any contract — is it a honeypot,
+    buy/sell tax, mintable, can owner reclaim ownership, transfer-pausable, blacklist, open-source, holder
+    count, plus a DANGER/HIGH_RISK/CAUTION/OK verdict and risk flags. The call every trading and sniping
+    agent should make BEFORE buying a token. Live from GoPlus Security across Ethereum, Base, BSC, Polygon,
+    Arbi…'
+- name: prediction_market_odds
+  price: $0.01
+  rest: GET /markets/prediction
+  description: '$0.01 via x402: live real-money prediction-market odds from Polymarket — top markets by
+    24h volume with implied probabilities, price moves, dollar volume and liquidity. Search by keyword
+    (bitcoin, election, fed, world cup, AI). For trading, forecasting, news and event-resolution agents.
+    One call instead of integrating the exchange API.'
+- name: llm_chat_completions
+  price: $0.002
+  rest: POST /v1/chat/completions
+  description: '$0.002 via x402: Workers AI chat (OpenAI-compatible). Default @cf/meta/llama-3.1-8b-instruct-fp8.'
+tools_note: The 24 rows above are a representative sample; the complete 92-tool list with every inputSchema
+  is the verbatim tools/list capture in mcp/agentexchange-work-mcp-tools.json, and the full tool → operationId
+  binding is mcp/agentexchange-work-tool-crosswalk.yml. Prices are the ones the provider's descriptor
+  states on 2026-09-19; the x402 catalog is authoritative for live prices.
+descriptions_source: live tools/list (authorship probe or saved capture); filled by backfill-tools-from-authorship.py
+  --descriptions, 2026-09-28
