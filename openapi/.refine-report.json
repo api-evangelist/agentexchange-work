@@ -1,9 +1,9 @@
 {
   "provider": "agentexchange-work",
   "sources": [
-    "agentexchange-work-agent-planets-openapi.json",
-    "agentexchange-work-api-store-openapi.json",
-    "agentexchange-work-gatekeeper-oracle-openapi.json"
+    "_original/agentexchange-work-agent-planets-openapi.json",
+    "_original/agentexchange-work-api-store-openapi.json",
+    "_original/agentexchange-work-gatekeeper-oracle-openapi.json"
   ],
   "outputs": [
     "agentexchange-work-claim-api-openapi.yml",
@@ -30,14 +30,11 @@
     "agentexchange-work-x402-api-openapi.yml",
     "agentexchange-work-oracle-api-openapi.yml"
   ],
-  "archived": [
-    "archived openapi/agentexchange-work-agent-planets-openapi.json",
-    "archived openapi/agentexchange-work-api-store-openapi.json",
-    "archived openapi/agentexchange-work-gatekeeper-oracle-openapi.json"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
+    "sourced from openapi/_original/ (3 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "agentexchange-work-agent-planets-openapi.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "agentexchange-work-agent-planets-openapi.json: tagged paths GET /survey -> Survey",
     "agentexchange-work-agent-planets-openapi.json: tagged paths GET /odds -> Odds",
@@ -141,7 +138,31 @@
     "agentexchange-work-api-store-openapi.json: multi-axis tagging (86 tags, 16 first tags, 2.29x duplication over 86 operations) \u2014 split on first tag, 22 operations narrowed",
     "agentexchange-work-gatekeeper-oracle-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "agentexchange-work-gatekeeper-oracle-openapi.json: declared missing tag: oracle",
-    "apis.yml register: written (+23 apis, 25 total)"
+    "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "agentexchange-work-agents-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-billing-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-claim-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-crawl-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-crypto-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-directory-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-enrichment-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-enterprise-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-handshakes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-human-checkout-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-llm-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-marketplace-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-notary-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-odds-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-oracle-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-planets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-pulse-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-scrape-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-scraper-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-survey-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-weather-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentexchange-work-x402-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
