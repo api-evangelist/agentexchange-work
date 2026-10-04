@@ -145,6 +145,8 @@ apis:
   humanURL: https://store.agentexchange.work/
   baseURL: https://store.agentexchange.work
   tags:
+  - Agents
+  tags_raw:
   - agents
   properties:
   - type: OpenAPI
@@ -177,6 +179,8 @@ apis:
   humanURL: https://store.agentexchange.work/
   baseURL: https://store.agentexchange.work
   tags:
+  - Billing
+  tags_raw:
   - billing
   properties:
   - type: OpenAPI
@@ -241,6 +245,8 @@ apis:
   humanURL: https://store.agentexchange.work/
   baseURL: https://store.agentexchange.work
   tags:
+  - Crawl
+  tags_raw:
   - crawl
   properties:
   - type: OpenAPI
@@ -273,6 +279,8 @@ apis:
   humanURL: https://store.agentexchange.work/
   baseURL: https://store.agentexchange.work
   tags:
+  - Crypto
+  tags_raw:
   - crypto
   properties:
   - type: OpenAPI
@@ -305,6 +313,8 @@ apis:
   humanURL: https://store.agentexchange.work/
   baseURL: https://store.agentexchange.work
   tags:
+  - Directory
+  tags_raw:
   - directory
   properties:
   - type: OpenAPI
@@ -337,6 +347,8 @@ apis:
   humanURL: https://store.agentexchange.work/
   baseURL: https://store.agentexchange.work
   tags:
+  - Enrichment
+  tags_raw:
   - enrichment
   properties:
   - type: OpenAPI
@@ -369,6 +381,8 @@ apis:
   humanURL: https://store.agentexchange.work/
   baseURL: https://store.agentexchange.work
   tags:
+  - Enterprise
+  tags_raw:
   - enterprise
   properties:
   - type: OpenAPI
@@ -465,6 +479,8 @@ apis:
   humanURL: https://store.agentexchange.work/
   baseURL: https://store.agentexchange.work
   tags:
+  - LLM
+  tags_raw:
   - llm
   properties:
   - type: OpenAPI
@@ -497,6 +513,8 @@ apis:
   humanURL: https://store.agentexchange.work/
   baseURL: https://store.agentexchange.work
   tags:
+  - Marketplace
+  tags_raw:
   - marketplace
   properties:
   - type: OpenAPI
@@ -529,6 +547,8 @@ apis:
   humanURL: https://store.agentexchange.work/
   baseURL: https://store.agentexchange.work
   tags:
+  - Notary
+  tags_raw:
   - notary
   properties:
   - type: OpenAPI
@@ -593,6 +613,8 @@ apis:
   humanURL: https://store.agentexchange.work/
   baseURL: https://store.agentexchange.work
   tags:
+  - Oracle
+  tags_raw:
   - oracle
   properties:
   - type: OpenAPI
@@ -689,6 +711,8 @@ apis:
   humanURL: https://store.agentexchange.work/
   baseURL: https://store.agentexchange.work
   tags:
+  - Scrape
+  tags_raw:
   - scrape
   properties:
   - type: OpenAPI
@@ -753,6 +777,8 @@ apis:
   humanURL: https://store.agentexchange.work/
   baseURL: https://store.agentexchange.work
   tags:
+  - Search
+  tags_raw:
   - search
   properties:
   - type: OpenAPI
@@ -785,6 +811,8 @@ apis:
   humanURL: https://store.agentexchange.work/
   baseURL: https://store.agentexchange.work
   tags:
+  - Surveys
+  tags_raw:
   - Survey
   properties:
   - type: OpenAPI
@@ -817,6 +845,8 @@ apis:
   humanURL: https://store.agentexchange.work/
   baseURL: https://store.agentexchange.work
   tags:
+  - Weather
+  tags_raw:
   - weather
   properties:
   - type: OpenAPI
