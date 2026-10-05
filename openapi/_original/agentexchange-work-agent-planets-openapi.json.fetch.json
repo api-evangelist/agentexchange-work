@@ -1,0 +1,12 @@
+{
+ "url": "https://planets.agentexchange.work/openapi.json",
+ "requested_url": "https://planets.agentexchange.work/openapi.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 2243,
+ "sha256": "2c1c1d8097016ea78a134603ab4def50990ad25f186610c973afb7ccda7fd4f7",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}

@@ -1,0 +1,12 @@
+{
+ "url": "https://store.agentexchange.work/openapi.json",
+ "requested_url": "https://store.agentexchange.work/swagger.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 83263,
+ "sha256": "ebdf064d5aa277debe80075461f45b356f8b50aebd220162722f9f35a2eb694c",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
