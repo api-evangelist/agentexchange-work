@@ -129,3 +129,29 @@ human_products:
   note: Sold from a workers.dev host the provider controls; recorded, not treated as an agentexchange.work API surface.
 free_tier: GET /score (no key), GET /samples, /studio, /badge, /market, /v1/models, /status, /health; planets claim;
   clearing-house register/discover/bid; 30-day refund on the human reports (terms).
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - hybrid
+  - subscription
+  units: []
+  plans:
+  - name: All-Access API Key — Pro
+    access: other
+    model: hybrid
+    model_how: derived
+    units: []
+    periods: []
+  - name: Prepaid Credit Pack — 1,000 calls
+    access: other
+    model: hybrid
+    model_how: derived
+    units: []
+    periods: []
+  - name: Pay-as-you-go (metered) API Key
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods: []
