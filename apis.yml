@@ -35,7 +35,7 @@ tags:
 - A2A
 - AI Visibility
 - Generative Engine Optimization
-- Crypto
+- Cryptocurrency
 - Blockchain
 - On-Chain Data
 - Web Search
@@ -279,7 +279,7 @@ apis:
   humanURL: https://store.agentexchange.work/
   baseURL: https://store.agentexchange.work
   tags:
-  - Crypto
+  - Cryptocurrency
   tags_raw:
   - crypto
   properties:
@@ -347,7 +347,7 @@ apis:
   humanURL: https://store.agentexchange.work/
   baseURL: https://store.agentexchange.work
   tags:
-  - Enrichment
+  - Data Enrichment
   tags_raw:
   - enrichment
   properties:
