@@ -19,3 +19,9 @@ paths:
       - Claim
       operationId: postApiClaim
       x-operation-id-source: derived
+x-provenance:
+  method: harvested
+  publisher: Agent Exchange
+  source: https://planets.agentexchange.work/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
