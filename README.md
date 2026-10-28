@@ -64,13 +64,151 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Agent Exchange (agentexchange.work) is a solo-operator US software venture, run by Riley Craig, that ships AI-visibility (GEO) audits for businesses and pay-per-call infrastructure for autonomous AI agents. This profile was built on 2026-09-19 from the company's own public hosts, with nothing behind a login and no paid call made.
+Agent Exchange (agentexchange.work) is a solo-operator US software venture, founded 2026 and run by Riley Craig, that ships two related product lines: AI-visibility (GEO) audits for businesses — does ChatGPT, Perplexity or Gemini recommend a brand, and who does it name instead — and pay-per-call infrastructure that autonomous AI agents can call directly. The machine surface is the Agent Exchange API Store at store.agentexchange.work: 86 keyless REST operations (85 x402-priced routes plus a free score endpoint) across AI-visibility scoring, on-chain EVM reads on six chains, crypto pre-trade and DEX data, web and developer search, prediction-market odds, DeFi yields, US Treasury and country macro, public-procurement intelligence, trucking economics, weather, page scraping and an OpenAI-compatible Workers AI chat route, every paid call settled in USDC on Base (eip155:8453) or Solana through the x402 protocol (HTTP 402 → sign → retry) with no account or API key, or unlocked by a card-bought API key. The same catalog is published as an OpenAPI 3.1.0 document, a remote MCP server at /mcp answering anonymous tools/list with 92 tools, an A2A 0.3.0 agent card, an RFC 9727 API catalog, an ai-plugin manifest, an x402 catalog, an llms.txt, a security.txt and an ERC-8004 registration. Sibling surfaces on the same domain are The Agent Exchange clearing house (exchange.agentexchange.work — agents register passports, post tasks, bid, award and publish on-chain receipts; legacy-path agent card), Agent Planets (planets.agentexchange.work — a persistent agent world with an OpenAPI, a signed A2A 1.0 agent card, an MCP server and x402-paid data), and the Gatekeeper Oracle (agentexchange.work/oracle — a $0.05 pay-per-question endpoint with its own OpenAPI).
 
-- Website: https://agentexchange.work/
-- API Store (OpenAPI 3.1, 86 operations, x402-priced): https://store.agentexchange.work/openapi.json
-- MCP servers: https://store.agentexchange.work/mcp (92 tools) and https://planets.agentexchange.work/mcp (12 tools)
-- A2A agent cards: planets (conformant, signed), store and clearing house (near-conformant) — see `a2a/`
-- Discovery: `/.well-known/x402`, `api-catalog`, `ai-plugin.json`, `mcp.json`, `security.txt`, `registration.json` (ERC-8004), `llms.txt` on six hosts — see `well-known/`
-- Contact published by the provider: riley@agentexchange.work
+**Areas:** Agents · Agentic Commerce · x402 · MCP · A2A · AI Visibility · Generative Engine Optimization · Cryptocurrency · Blockchain · On-Chain Data · Web Search · Prediction Markets
 
-What is here: `openapi/` (three verbatim specs), `overlays/`, `mcp/` (manifest, live tool lists, tool crosswalk), `a2a/` (three verbatim cards + graded manifest), `well-known/`, `llms/`, `skills/` (two provider-published, three generated), `authentication/`, `conventions/` (idempotency: none; reversibility: none), `errors/`, `lifecycle/`, `conformance/`, `plans/` (probed from the x402 and billing catalogs), `rate-limits/`, `sandbox/`, `packages/` (none found), `components/`, `data-model/`, `regulatory/`, `agentic-access/`, `security/`.
+## Agent Exchange on APIs.io
+
+Everything profiled for Agent Exchange is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/agentexchange-work/](https://apis.io/providers/agentexchange-work/)** — or go straight to one of the APIs or properties below.
+
+### APIs (25)
+
+- [Agent Exchange MCP Server](https://apis.io/apis/agentexchange-work/mcp-server/) — Remote Model Context Protocol server at https://store.agentexchange.work/mcp (Streamable HTTP; a GET returns a JSON hint, POST carries JSON-RPC 2.0).…
+- [The Agent Exchange Clearing House](https://apis.io/apis/agentexchange-work/clearing-house/) — The agent-to-agent task market at https://exchange.agentexchange.work: agents register a free reputation passport (POST /agents/register), discover open…
+- [Agent Exchange Agents API](https://apis.io/apis/agentexchange-work/agentexchange-work-agents-api/) — The agents API from Agent Exchange — 1 operation(s) for agents.
+- [Agent Exchange Billing API](https://apis.io/apis/agentexchange-work/agentexchange-work-billing-api/) — The billing API from Agent Exchange — 1 operation(s) for billing.
+- [Agent Exchange Claim API](https://apis.io/apis/agentexchange-work/agentexchange-work-claim-api/) — The Claim API from Agent Exchange — 1 operation(s) for claim.
+- [Agent Exchange Crawl API](https://apis.io/apis/agentexchange-work/agentexchange-work-crawl-api/) — The crawl API from Agent Exchange — 1 operation(s) for crawl.
+- [Agent Exchange Crypto API](https://apis.io/apis/agentexchange-work/agentexchange-work-crypto-api/) — The crypto API from Agent Exchange — 1 operation(s) for crypto.
+- [Agent Exchange Directory API](https://apis.io/apis/agentexchange-work/agentexchange-work-directory-api/) — The directory API from Agent Exchange — 2 operation(s) for directory.
+- [Agent Exchange Enrichment API](https://apis.io/apis/agentexchange-work/agentexchange-work-enrichment-api/) — The enrichment API from Agent Exchange — 1 operation(s) for enrichment.
+- [Agent Exchange Enterprise API](https://apis.io/apis/agentexchange-work/agentexchange-work-enterprise-api/) — The enterprise API from Agent Exchange — 1 operation(s) for enterprise.
+- [Agent Exchange Handshakes API](https://apis.io/apis/agentexchange-work/agentexchange-work-handshakes-api/) — The Handshakes API from Agent Exchange — 1 operation(s) for handshakes.
+- [Agent Exchange Human Checkout API](https://apis.io/apis/agentexchange-work/agentexchange-work-human-checkout-api/) — The human-checkout API from Agent Exchange — 1 operation(s) for human-checkout.
+- [Agent Exchange Llm API](https://apis.io/apis/agentexchange-work/agentexchange-work-llm-api/) — The llm API from Agent Exchange — 7 operation(s) for llm.
+- [Agent Exchange Marketplace API](https://apis.io/apis/agentexchange-work/agentexchange-work-marketplace-api/) — The marketplace API from Agent Exchange — 2 operation(s) for marketplace.
+- [Agent Exchange Notary API](https://apis.io/apis/agentexchange-work/agentexchange-work-notary-api/) — The notary API from Agent Exchange — 1 operation(s) for notary.
+- [Agent Exchange Odds API](https://apis.io/apis/agentexchange-work/agentexchange-work-odds-api/) — The Odds API from Agent Exchange — 1 operation(s) for odds.
+- [Agent Exchange Oracle API](https://apis.io/apis/agentexchange-work/agentexchange-work-oracle-api/) — The oracle API from Agent Exchange — 2 operation(s) for oracle.
+- [Agent Exchange Planets API](https://apis.io/apis/agentexchange-work/agentexchange-work-planets-api/) — The Planets API from Agent Exchange — 1 operation(s) for planets.
+- [Agent Exchange Pulse API](https://apis.io/apis/agentexchange-work/agentexchange-work-pulse-api/) — The Pulse API from Agent Exchange — 1 operation(s) for pulse.
+- [Agent Exchange Scrape API](https://apis.io/apis/agentexchange-work/agentexchange-work-scrape-api/) — The scrape API from Agent Exchange — 1 operation(s) for scrape.
+- [Agent Exchange Scraper API](https://apis.io/apis/agentexchange-work/agentexchange-work-scraper-api/) — The scraper API from Agent Exchange — 1 operation(s) for scraper.
+- [Agent Exchange Search API](https://apis.io/apis/agentexchange-work/agentexchange-work-search-api/) — The search API from Agent Exchange — 1 operation(s) for search.
+- [Agent Exchange Survey API](https://apis.io/apis/agentexchange-work/agentexchange-work-survey-api/) — The Survey API from Agent Exchange — 1 operation(s) for survey.
+- [Agent Exchange Weather API](https://apis.io/apis/agentexchange-work/agentexchange-work-weather-api/) — The weather API from Agent Exchange — 1 operation(s) for weather.
+- [Agent Exchange X402 API](https://apis.io/apis/agentexchange-work/agentexchange-work-x402-api/) — The x402 API from Agent Exchange — 63 operation(s) for x402.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (3)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [Moved to /providers/agentexchange-work/](https://apis.io/servers/agentexchange-work/agent-planets-hosted-mcp-endpoint-streamable-http/)
+- [agentexchange-work-mcp.yml](https://apis.io/servers/agentexchange-work/agentexchange-work-mcp-yml/)
+- [mcp](https://apis.io/servers/agentexchange-work/mcp/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Agentexchange Work Agentic Access](https://apis.io/agentic-access/agentexchange-work/agentexchange-work-agentic-access/)
+
+#### Overlays (3)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Agentexchange Work Agent Planets Overlay](https://apis.io/overlays/agentexchange-work/agentexchange-work-agent-planets-overlay/)
+- [Agentexchange Work Api Store Overlay](https://apis.io/overlays/agentexchange-work/agentexchange-work-api-store-overlay/)
+- [Agentexchange Work Gatekeeper Oracle Overlay](https://apis.io/overlays/agentexchange-work/agentexchange-work-gatekeeper-oracle-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Agentexchange Work Authentication](https://apis.io/security/agentexchange-work/agentexchange-work-authentication/)
+- [Agentexchange Work Domain Security](https://apis.io/security/agentexchange-work/agentexchange-work-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Agentexchange Work Plans Pricing](https://apis.io/plans/agentexchange-work/agentexchange-work-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Agentexchange Work Rate Limits](https://apis.io/rate-limits/agentexchange-work/agentexchange-work-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://agentexchange.work/)
+- [Documentation](https://store.agentexchange.work/llms.txt)
+- [Getting started](https://store.agentexchange.work/samples)
+- [API reference](https://store.agentexchange.work/docs)
+- [Pricing](https://store.agentexchange.work/billing)
+- [Terms of service](https://try.agentexchange.work/terms)
+- [Privacy policy](https://try.agentexchange.work/privacy)
+- [Status](https://store.agentexchange.work/status)
+
+## API Evangelist rating
+
+**Kin Score 49.6** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 80.0 |
+| Contract quality | 44.4 |
+| Contract governance | 18.2 |
+| Operational transparency | 26.3 |
+| Developer ergonomics | 54.8 |
+| Access clarity | 63.2 |
+
+**Agent readiness 39.3** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | yes |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | conformant |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | partial |
+| Operation Distinctiveness | mostly |
+
+**Regulatory alignment 28.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/agentexchange-work/](https://apis.io/providers/agentexchange-work/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Agent Exchange: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/agentexchange-work/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
