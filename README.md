@@ -116,34 +116,47 @@ Model Context Protocol servers that expose the API to agents.
 
 Which operations an agent can call, which act, and which need a human in the loop.
 
-- [Agentexchange Work Agentic Access](https://apis.io/agentic-access/agentexchange-work/agentexchange-work-agentic-access/)
+- [Agent Exchange Agentic Access](https://apis.io/agentic-access/agentexchange-work/agentexchange-work-agentic-access/)
 
 #### Overlays (3)
 
 OpenAPI overlays, including conversational phrasing for each operation.
 
-- [Agentexchange Work Agent Planets Overlay](https://apis.io/overlays/agentexchange-work/agentexchange-work-agent-planets-overlay/)
-- [Agentexchange Work Api Store Overlay](https://apis.io/overlays/agentexchange-work/agentexchange-work-api-store-overlay/)
-- [Agentexchange Work Gatekeeper Oracle Overlay](https://apis.io/overlays/agentexchange-work/agentexchange-work-gatekeeper-oracle-overlay/)
+- [Agent Exchange Agent Planets Overlay](https://apis.io/overlays/agentexchange-work/agentexchange-work-agent-planets-overlay/)
+- [Agent Exchange Api Store Overlay](https://apis.io/overlays/agentexchange-work/agentexchange-work-api-store-overlay/)
+- [Agent Exchange Gatekeeper Oracle Overlay](https://apis.io/overlays/agentexchange-work/agentexchange-work-gatekeeper-oracle-overlay/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [Agent Exchange API Rules](https://apis.io/rules/agentexchange-work/agentexchange-work-rules/)
 
 #### Security (2)
 
 Authentication, trust centre, and vulnerability disclosure.
 
-- [Agentexchange Work Authentication](https://apis.io/security/agentexchange-work/agentexchange-work-authentication/)
-- [Agentexchange Work Domain Security](https://apis.io/security/agentexchange-work/agentexchange-work-domain-security/)
+- [Agent Exchange Authentication](https://apis.io/security/agentexchange-work/agentexchange-work-authentication/)
+- [Agent Exchange Domain Security](https://apis.io/security/agentexchange-work/agentexchange-work-domain-security/)
 
-#### Plans and pricing (1)
+#### Plans and pricing (2)
 
 Published plans, tiers and prices.
 
-- [Agentexchange Work Plans Pricing](https://apis.io/plans/agentexchange-work/agentexchange-work-plans-pricing/)
+- [Agent Exchange Plans Pricing](https://apis.io/plans/agentexchange-work/agentexchange-work-plans-pricing/)
+- [Agent Exchange Price Estimates](https://apis.io/plans/agentexchange-work/agentexchange-work-price-estimates/)
 
 #### Rate limits (1)
 
 Published request limits.
 
-- [Agentexchange Work Rate Limits](https://apis.io/rate-limits/agentexchange-work/agentexchange-work-rate-limits/)
+- [Agent Exchange Rate Limits](https://apis.io/rate-limits/agentexchange-work/agentexchange-work-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Agent Exchange Finops](https://apis.io/finops/agentexchange-work/agentexchange-work-finops/)
 
 ## Where to find this API
 
@@ -160,18 +173,18 @@ Links to the company's own pages. This repository publishes no copy of their spe
 
 ## API Evangelist rating
 
-**Kin Score 49.6** — developing · rubric 0.25.0 · scored 2026-10-23
+**Kin Score 51.7** — developing · rubric 0.28.1 · scored 2026-11-21
 
 | Facet | Score |
 |---|---|
-| Discoverability | 80.0 |
-| Contract quality | 44.4 |
-| Contract governance | 18.2 |
-| Operational transparency | 26.3 |
+| Discoverability | 90.0 |
+| Contract quality | 48.4 |
+| Contract governance | 31.8 |
+| Operational transparency | 23.8 |
 | Developer ergonomics | 54.8 |
-| Access clarity | 63.2 |
+| Access clarity | 57.4 |
 
-**Agent readiness 39.3** — agent-ready (gated down from agent-native)
+**Agent readiness 43.1** — agent-ready (gated down from agent-native)
 
 | Agent-readiness dimension | Result |
 |---|---|
@@ -187,15 +200,19 @@ Links to the company's own pages. This repository publishes no copy of their spe
 | Event Surface Described | — |
 | Agent Skills | yes |
 | Well Known Catalog | yes |
-| Consent Identity | — |
+| Consent Identity | signal |
 | Agent Card | conformant |
 | Dry Run Mode | — |
 | Delegated Identity | — |
 | Protected Resource Metadata | — |
 | Dynamic Client Registration | — |
-| Agentic Commerce | — |
+| Agentic Commerce | self |
 | Pagination Ratio | partial |
 | Operation Distinctiveness | mostly (partial credit) |
+| MCP Tool Quality | half (partial credit) |
+| Onboarding Descriptor | — |
+| Dns Aid Index | na |
+| Markdown Negotiation | na |
 
 **Regulatory alignment 28.4** — Horizontal (data, software, accessibility, platform)
 
